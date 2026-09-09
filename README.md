@@ -17,6 +17,30 @@ npm run dev
 
 Opens on http://localhost:5173. `npm run build` produces `dist/`.
 
+## Deploy
+
+Live at **https://kyaraslav-cell.github.io/portfolio/**, served from the
+`gh-pages` branch.
+
+```bash
+npm run deploy
+```
+
+Builds and force-pushes `dist/` to `gh-pages`. Vite is configured with
+`base: "./"`, so every asset path is relative and the build works under the
+`/portfolio/` sub-path without knowing the repo name.
+
+There is a GitHub Actions workflow ready at `docs/ci/github-pages.yml`, unused
+because the local `gh` token has no `workflow` scope and GitHub rejects pushes
+that add workflow files without it. To switch to CI:
+
+```bash
+gh auth refresh -s workflow
+mkdir -p .github/workflows && cp docs/ci/github-pages.yml .github/workflows/
+```
+
+then set the Pages source to "GitHub Actions" in the repository settings.
+
 ## Where things are
 
 | Path | What |
@@ -140,7 +164,9 @@ hourly rate invites comparison with people charging 30 zł/h.
 
 ## Not done yet
 
-- Not in git and not pushed anywhere. Running locally only.
+- The repository is public so that Pages can serve it, which the free plan
+  requires. Nothing secret is tracked: `.env` is ignored and the history has
+  been checked.
 - Contact still uses the template's EmailJS service. Works, but the account is
   the old one.
 - No booking link. The plan was to replace the form with a calendar and keep
