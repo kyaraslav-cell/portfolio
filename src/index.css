@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -8,7 +8,19 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background-color: #050816;
+  font-family: "Inter", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, .font-display {
+  font-family: "Manrope", system-ui, sans-serif;
+  letter-spacing: -0.025em;
 }
 
 html {
@@ -24,18 +36,53 @@ html {
   }
 }
 
-body {
-  background-color: #050816;
-}
-
 .hash-span {
   display: block;
+}
+
+/* Reveal-on-scroll. The class is added by an IntersectionObserver; if the
+   transition never runs the element is simply already in its final state. */
+.reveal {
+  opacity: 0;
+  transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-up {
+  transform: translate3d(0, 28px, 0);
+}
+.reveal-down {
+  transform: translate3d(0, -28px, 0);
+}
+.reveal-left {
+  transform: translate3d(28px, 0, 0);
+}
+.reveal-right {
+  transform: translate3d(-28px, 0, 0);
+}
+.reveal-none {
+  transform: none;
+}
+
+.reveal.is-shown {
+  opacity: 1;
+  transform: none;
+  will-change: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    transition: none;
+    transform: none;
+  }
 }
 
 /* react-three-fiber puts className on its wrapper, and touch-action does not
    inherit, so the rule has to reach the canvas element itself. pan-y lets a
    vertical swipe scroll the page while a horizontal drag turns the arm. */
-.arm-canvas canvas {
+.arm-canvas canvas,
+.planets-canvas canvas {
   touch-action: pan-y;
 }
 

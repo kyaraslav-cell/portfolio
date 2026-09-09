@@ -15,31 +15,30 @@ const Pricing = () => {
         headingClass={styles.sectionHeadText}
       />
 
-      <Reveal as="p" className="mt-6 text-secondary text-[16px] max-w-3xl leading-[28px]">
+      <Reveal as="p" className={`${styles.sectionIntro} mt-7`}>
         {t.pricing.intro}
       </Reveal>
 
-      <Reveal className="mt-10 rounded-2xl border border-indigo-500/20 overflow-hidden">
+      <Reveal className="mx-auto mt-12 max-w-3xl overflow-hidden rounded-3xl border border-line">
         {t.pricing.rows.map((row, i) => (
           <div
             key={row.scope}
-            className={`flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 px-6 py-5 ${
-              i % 2 ? "bg-black-100" : "bg-tertiary"
+            className={`group flex flex-col gap-1 px-7 py-6 text-center transition-colors duration-500 ease-fluid hover:bg-accent/[0.07] sm:flex-row sm:items-center sm:gap-6 sm:text-left ${
+              i ? "border-t border-line" : ""
             }`}
           >
             <div className="sm:flex-1">
-              <p className="text-white font-medium text-[16px]">{row.scope}</p>
-              <p className="text-secondary text-[13px] mt-0.5">{row.detail}</p>
+              <p className="font-display text-[17px] font-semibold text-white">{row.scope}</p>
+              <p className="mt-1 text-[13px] text-secondary">{row.detail}</p>
             </div>
-            <p className="text-[#b58bff] font-medium text-[16px] whitespace-nowrap">{row.price}</p>
+            <p className="font-display text-[18px] font-bold text-accent-soft transition-transform duration-500 ease-fluid group-hover:scale-105 sm:whitespace-nowrap">
+              {row.price}
+            </p>
           </div>
         ))}
       </Reveal>
 
-      <Reveal
-        as="p"
-        className="mt-6 text-secondary text-[15px] max-w-3xl leading-[26px] border-l-2 border-[#00cea8]/40 pl-4"
-      >
+      <Reveal as="p" className="mx-auto mt-8 max-w-2xl text-center text-[14px] leading-[1.65] text-secondary">
         {t.pricing.note}
       </Reveal>
     </>

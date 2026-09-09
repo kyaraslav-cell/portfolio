@@ -1,7 +1,7 @@
 // All site copy lives here, in Polish and English.
 // Polish is the default: the buyers this site is written for are Polish SMEs.
-// Numbers presented as measured are marked as such and come from the projects
-// themselves. Do not add a number here that nobody actually counted.
+// Numbers presented as measured come from the projects themselves. Do not add
+// a number here that nobody actually counted.
 
 const pl = {
   meta: {
@@ -26,7 +26,7 @@ const pl = {
     chips: [
       "3 lata sprzedaży na Allegro i Shoper",
       "System działający u klienta",
-      "Dane zostają na serwerze klienta",
+      "Dane zostają na Twoim serwerze",
     ],
     ctaPrimary: "Zobacz realizacje",
     ctaSecondary: "Napisz do mnie",
@@ -35,51 +35,33 @@ const pl = {
 
   about: {
     kicker: "Kim jestem",
-    heading: "O mnie",
-    paragraphs: [
-      "Buduję automatyzacje dla małych firm handlowych i usługowych. Przenoszenie zamówień, faktur i stanów między sklepem, ERP i arkuszami. Powiadomienia, które docierają na telefon. Raporty, które aktualizują się same.",
-      "Od 2023 roku prowadzę sprzedaż online na Allegro i Shoper w warszawskiej firmie handlowej. Zwroty, faktury korygujące, rozjazdy stanów magazynowych, etykiety kurierskie - robiłem to codziennie, zanim zacząłem to automatyzować. To jest różnica między integracją napisaną z dokumentacji API a integracją napisaną przez kogoś, kto wie, co się w niej psuje w praktyce.",
-      "Studiuję Inżynierię Zarządzania na Politechnice Warszawskiej i mam certyfikat IPMA Student (nr 152/2025/IS). Każde zlecenie zaczynam od pytań o proces, a nie od wyceny, bo wycena bez zrozumienia procesu to zgadywanie.",
-    ],
+    heading: "Automatyzuję to, co sam klikałem",
+    intro:
+      "Od 2023 roku prowadzę sprzedaż online na Allegro i Shoper. Zwroty, faktury korygujące, rozjazdy stanów, etykiety kurierskie - robiłem to codziennie, zanim zacząłem to automatyzować.",
+    note: "Inżynieria Zarządzania na Politechnice Warszawskiej, certyfikat IPMA Student. Zaczynam od pytań o proces, nie od wyceny.",
     servicesKicker: "Czym się zajmuję",
   },
 
   services: [
-    {
-      key: "integrations",
-      title: "Integracje sklep i ERP",
-      body: "Allegro, Shoper, BaseLinker, Comarch, Subiekt. Zamówienia, stany, faktury i etykiety przenoszone bez przepisywania ręcznie.",
-    },
-    {
-      key: "documents",
-      title: "Obieg dokumentów",
-      body: "Faktury z PDF do systemu, import arkuszy, KSeF. Wszędzie tam, gdzie ktoś dziś przepisuje dane z jednego okna do drugiego.",
-    },
-    {
-      key: "monitoring",
-      title: "Monitoring i alerty",
-      body: "Obserwowanie skrzynki, ogłoszeń, cen czy statusów zamówień. To, co ważne, trafia na telefon. Reszta zostaje cicha.",
-    },
-    {
-      key: "reporting",
-      title: "Raporty i dashboardy",
-      body: "Power BI, SQL, Google Analytics. Liczby w jednym miejscu, aktualne rano, bez comiesięcznego składania arkusza ręcznie.",
-    },
+    { key: "integrations", title: "Sklep i ERP", line: "Zamówienia, stany i faktury bez przepisywania" },
+    { key: "documents", title: "Dokumenty", line: "Faktury z PDF prosto do systemu. KSeF." },
+    { key: "monitoring", title: "Monitoring", line: "Ważne trafia na telefon. Reszta zostaje cicha." },
+    { key: "reporting", title: "Raporty", line: "Liczby w jednym miejscu, aktualne rano." },
   ],
 
   works: {
     kicker: "Realizacje",
     heading: "Co zbudowałem",
-    intro:
-      "Dwa działające systemy i jeden projekt studyjny. Przy każdym podaję, co zostało zmierzone, a co jest założeniem projektowym. Liczby pochodzą z tych systemów, nie z szacunków.",
+    intro: "Dwa działające systemy. Liczby pochodzą z nich, nie z szacunków.",
     labels: {
       problem: "Problem",
       approach: "Podejście",
       result: "Efekt",
       price: "Wycena",
-      status: "Status",
-      stack: "Stack",
       measured: "Zmierzone",
+      prev: "Poprzednia realizacja",
+      next: "Następna realizacja",
+      goTo: "Przejdź do realizacji",
     },
   },
 
@@ -88,17 +70,20 @@ const pl = {
       key: "mailwatch",
       name: "MailWatch",
       tagline: "Zapytania klientów wyłowione ze skrzynki sklepu",
-      status: "Wdrożone u klienta, działa",
-      problem:
-        "Zapytania klientów leżały w wspólnej skrzynce razem z mailingiem, ofertami SEO i powiadomieniami platform. Zmierzone na 4 156 wiadomościach z 1 697 dni: klient czekał na odpowiedź medianę 14,6 godziny, a co dziesiąty prawie pięć dni. Na marketplace ta sprzedaż jest już wtedy u kogoś innego.",
+      status: "Działa u klienta",
+      metrics: [
+        { value: "4 156", label: "przeanalizowanych wiadomości" },
+        { value: "72% → 25%", label: "poczty trafiającej do człowieka" },
+        { value: "14,6 h", label: "mediana odpowiedzi przed wdrożeniem" },
+        { value: "0", label: "zapytań zgubionych przez filtr" },
+      ],
+      problem: "Zapytania ginęły w skrzynce razem z mailingiem i powiadomieniami platform.",
       approach:
-        "Klasyfikacja zbudowana na własnej poczcie sklepu, nie na zgadywanych regułach. Za prawdę przyjąłem odpowiedzi obsługi: jeśli ktoś odpisał, to był klient. Dane osobowe są usuwane, zanim cokolwiek trafi do modelu językowego, i nie ma ustawienia, które to wyłącza. Odpowiedź zwrotna to stały szablon, a nie tekst generowany, więc nie wymyśli ceny ani terminu dostawy.",
-      result:
-        "Do człowieka trafia 25% poczty zamiast 72%. Na 4 156 wiadomościach każda, którą filtr odrzuca po odpowiedzi obsługi, była powiadomieniem transakcyjnym albo ofertą sprzedażową, nigdy pytaniem klienta. Potwierdzenie dla klienta wychodzi w ciągu minuty i trafia na telefon właściciela. Program pinguje zewnętrzny monitor, więc jego zatrzymanie jest widoczne; wykrył już jedną realną awarię.",
-      measured:
-        "4 156 wiadomości, 1 697 dni, 374 potwierdzonych klientów. Mediana i percentyle liczone z faktycznie wysłanych odpowiedzi.",
-      price: "3 000 - 6 000 zł wdrożenie, 200 - 400 zł miesięcznie za monitoring",
-      stack: ["Node.js", "IMAP", "Telegram Bot API", "LLM", "healthchecks.io"],
+        "Filtr zbudowany na poczcie sklepu. Dane osobowe usuwane przed modelem, bez opcji wyłączenia.",
+      result: "Każde zapytanie ląduje na telefonie właściciela. Reszta zostaje cicha.",
+      measured: "4 156 wiadomości z 1 697 dni, 374 potwierdzonych klientów.",
+      price: "3 000 - 6 000 zł wdrożenie, 200 - 400 zł / mies.",
+      stack: ["Node.js", "IMAP", "Telegram", "LLM"],
       link: "https://github.com/kyaraslav-cell/mailwatch",
       linkLabel: "Kod na GitHubie",
     },
@@ -107,117 +92,64 @@ const pl = {
       name: "LeadFind",
       tagline: "Monitoring publicznych źródeł z oceną i decyzją na telefonie",
       status: "Działa od sierpnia 2026",
-      problem:
-        "Publiczne źródła trzeba przeglądać codziennie, żeby zdążyć zareagować. Ten sam problem ma firma śledząca przetargi, ceny konkurencji albo zmiany w ofertach na marketplace. Ktoś klika przez te same strony rano i wieczorem.",
+      metrics: [
+        { value: "1 602", label: "leady w bazie" },
+        { value: "11", label: "workflowów n8n" },
+        { value: "7", label: "monitorowanych źródeł" },
+        { value: "150 MB", label: "zamiast 1,5 GB po wyjściu z Dockera" },
+      ],
+      problem: "Publiczne źródła trzeba przeglądać codziennie, żeby zdążyć zareagować.",
       approach:
-        "Jedenaście workflowów n8n. Źródła nie dotykają bazy ani Telegrama; normalizują znalezione ogłoszenia i wysyłają je do jednego webhooka wejściowego, który jako jedyny deduplikuje i zapisuje. Kolejka analizy z limitem prób, ocena przez model językowy, interfejs w Telegramie z jedną kartą na ofertę, pętla zwrotna ucząca kolejny prompt i heartbeat co pięć minut.",
-      result:
-        "1 602 leady w bazie, jedenaście workflowów, PostgreSQL natywnie zamiast Dockera, czyli około 150 MB zamiast 1,5 GB. Jeden zepsuty scraper nie zatrzymuje reszty, bo logika deduplikacji i alertów jest w jednym miejscu. Historia wykonań przycinana do dwóch tygodni, po tym jak urosła do 665 MB.",
-      measured: "1 602 rekordy w bazie, 11 workflowów, pomiary zużycia zasobów z działającej instalacji.",
-      price: "6 000 - 12 000 zł wdrożenie, 300 - 600 zł miesięcznie",
-      stack: ["n8n", "PostgreSQL", "Telegram Bot API", "LLM", "Docker"],
-      legal:
-        "Tylko publiczne ogłoszenia biznesowe, niska częstotliwość odpytywania, źródło zapisane przy każdym rekordzie, bez LinkedIna.",
+        "Źródła nie dotykają bazy. Jeden webhook deduplikuje i zapisuje, kolejka ocenia, Telegram pyta o decyzję.",
+      result: "Jeden zepsuty scraper nie zatrzymuje reszty. Decyzja wraca i uczy kolejny prompt.",
+      measured: "1 602 rekordy i pomiary zasobów z działającej instalacji.",
+      price: "6 000 - 12 000 zł wdrożenie, 300 - 600 zł / mies.",
+      stack: ["n8n", "PostgreSQL", "Telegram", "LLM"],
+      legal: "Tylko publiczne ogłoszenia biznesowe, niska częstotliwość, źródło przy każdym rekordzie.",
       link: "",
       linkLabel: "",
-    },
-    {
-      key: "recognition",
-      name: "Rozpoznawanie twarzy",
-      tagline: "Projekt studyjny: Node.js, PostgreSQL, zewnętrzne API",
-      status: "Projekt studyjny, dostępny online",
-      problem:
-        "Nie jest to wdrożenie u klienta i tak go nie przedstawiam. Jest tu po to, żeby pokazać kod poza n8n: własny backend, własny schemat bazy i obsługa zewnętrznego API.",
-      approach:
-        "Serwer w Node.js, konta i licznik użyć w PostgreSQL, wykrywanie twarzy przez API Clarifai, front w Reakcie.",
-      result:
-        "Działająca aplikacja z rejestracją, logowaniem i zapisem historii. Kiedy narzędzie no-code trafia na swój limit, to jest poziom, na którym piszę dalej sam.",
-      measured: "",
-      price: "",
-      stack: ["Node.js", "PostgreSQL", "React", "REST API"],
-      link: "https://recognitionappv2.onrender.com/",
-      linkLabel: "Otwórz aplikację",
     },
   ],
 
   stack: {
     kicker: "Technologie",
     heading: "Czym pracuję",
-    intro:
-      "Pogrupowane tak, jak ich używam. Pierwsza grupa jest tą, przez którą warto mnie zatrudnić; reszta jest po to, żeby pierwsza działała.",
-    groupsKicker: "Pełna lista",
-    groups: [
-      {
-        title: "E-commerce i ERP",
-        items: ["Allegro API", "Shoper", "BaseLinker", "Comarch ERP", "Subiekt", "KSeF"],
-      },
-      {
-        title: "Automatyzacja i dane",
-        items: ["n8n", "PostgreSQL", "REST API", "Docker", "Power BI", "SQL", "Excel", "Google Analytics"],
-      },
-      {
-        title: "Kod",
-        items: ["Node.js", "TypeScript", "JavaScript", "React", "Git", "Three.js"],
-      },
-      {
-        title: "Modele językowe",
-        items: ["Klasyfikacja treści", "Redakcja danych osobowych", "Ocena i priorytetyzacja", "Człowiek w pętli"],
-      },
-    ],
+    intro: "Przeciągnij dowolną kulę, żeby ją obrócić.",
   },
 
   trust: {
     kicker: "Bezpieczeństwo",
     heading: "Co się dzieje z Twoimi danymi",
     intro:
-      "Najczęstszy powód, dla którego mała firma nie kupuje automatyzacji, to obawa, że jej dane wyjadą gdzieś, skąd nie da się ich wycofać. Dlatego pracuję tak:",
+      "Najczęstszy powód, dla którego mała firma nie kupuje automatyzacji, to obawa, że jej dane wyjadą gdzieś, skąd nie da się ich wycofać.",
     points: [
-      {
-        title: "Wszystko na Twojej infrastrukturze",
-        body: "Automatyzacje działają na Twoim serwerze albo komputerze. Nie ma zewnętrznej platformy, która trzyma Twoje zamówienia i podnosi cenę za rok.",
-      },
-      {
-        title: "Dane osobowe usuwane przed modelem",
-        body: "Zanim cokolwiek trafi do modelu językowego, znikają adresy e-mail, telefony, PESEL, NIP, numery kont i adresy. Model ma wiedzieć co, nie kto.",
-      },
-      {
-        title: "Umowa powierzenia",
-        body: "Przy każdym zleceniu dotykającym danych Twoich klientów podpisujemy umowę powierzenia przetwarzania (art. 28 RODO). Wzór mam gotowy przed rozmową.",
-      },
-      {
-        title: "Sekrety poza kodem",
-        body: "Hasła i klucze API w zmiennych środowiskowych, nigdy w repozytorium. Osobny klucz na usługę, nie jeden do wszystkiego.",
-      },
-      {
-        title: "n8n nie stoi otwarty w internecie",
-        body: "Panel za reverse proxy, HTTPS na własnej domenie, 2FA na koncie właściciela, historia wykonań przycinana, bo zawiera dane klientów i rośnie bez końca.",
-      },
-      {
-        title: "Człowiek przy decyzjach o ludziach",
-        body: "Nic, co dotyczy konkretnej osoby, nie zostaje rozstrzygnięte wyłącznie automatycznie (art. 22 RODO). Zawsze da się wskazać, gdzie w procesie siedzi człowiek.",
-      },
+      { title: "Na Twoim serwerze", body: "Żadna zewnętrzna platforma nie trzyma Twoich zamówień." },
+      { title: "Dane osobowe usuwane", body: "Zanim cokolwiek trafi do modelu. Bez opcji wyłączenia." },
+      { title: "Umowa powierzenia", body: "Art. 28 RODO. Wzór gotowy przed rozmową." },
+      { title: "Klucze poza kodem", body: "Zmienne środowiskowe, osobny klucz na usługę." },
+      { title: "n8n za proxy", body: "HTTPS, 2FA, przycinana historia wykonań." },
+      { title: "Człowiek w pętli", body: "Art. 22 RODO. Zawsze wiadomo, gdzie stoi." },
     ],
   },
 
   pricing: {
     kicker: "Wycena",
     heading: "Ile to kosztuje",
-    intro:
-      "Widełki, żeby było wiadomo, o jakiej skali rozmawiamy. Konkretna kwota pada po rozmowie o procesie, bo wycena bez zrozumienia procesu to zgadywanie.",
+    intro: "Widełki, żeby było wiadomo, o jakiej skali rozmawiamy.",
     rows: [
       { scope: "Jedna automatyzacja", detail: "Jeden proces, jedno źródło, jeden cel", price: "1 500 - 4 000 zł" },
       { scope: "Integracja sklep i ERP", detail: "Zamówienia, stany, dokumenty, obsługa błędów", price: "4 000 - 12 000 zł" },
       { scope: "System wieloetapowy z AI", detail: "Kilka źródeł, klasyfikacja, interfejs, monitoring", price: "8 000 - 20 000 zł" },
       { scope: "Utrzymanie i monitoring", detail: "Reakcja na awarie, zmiany w API dostawców", price: "200 - 600 zł / mies." },
     ],
-    note: "Pierwsza rozmowa i rozrysowanie procesu są bezpłatne. Jeśli okaże się, że problem rozwiązuje ustawienie w systemie, który już masz, powiem to zamiast wystawiać fakturę.",
+    note: "Pierwsza rozmowa i rozrysowanie procesu są bezpłatne. Jeśli problem rozwiązuje ustawienie w systemie, który już masz, powiem to zamiast wystawiać fakturę.",
   },
 
   contact: {
     kicker: "Kontakt",
     heading: "Napisz, co się psuje",
     intro:
-      "Najlepiej zacząć od opisu procesu: kto co dziś klika, ile razy dziennie i co się dzieje, gdy coś pójdzie nie tak. Odpowiadam w ciągu jednego dnia roboczego.",
+      "Opisz proces: kto co dziś klika, ile razy dziennie i co się dzieje, gdy coś pójdzie nie tak.",
     name: "Imię",
     namePlaceholder: "Jak się do Ciebie zwracać?",
     email: "E-mail",
@@ -270,51 +202,33 @@ const en = {
 
   about: {
     kicker: "Who I am",
-    heading: "About",
-    paragraphs: [
-      "I build automation for small trading and service businesses. Moving orders, invoices and stock between a shop, an ERP and spreadsheets. Notifications that reach a phone. Reports that update themselves.",
-      "Since 2023 I have been running online sales on Allegro and Shoper for a Warsaw trading business. Returns, correction invoices, stock mismatches, courier labels - I did those daily before I started automating them. That is the difference between an integration written from API docs and one written by somebody who knows what breaks in practice.",
-      "I study Management Engineering at Warsaw University of Technology and hold the IPMA Student certificate (no. 152/2025/IS). I start every job by asking about the process rather than quoting, because a quote without understanding the process is a guess.",
-    ],
+    heading: "I automate what I used to click",
+    intro:
+      "Since 2023 I have run online sales on Allegro and Shoper. Returns, correction invoices, stock mismatches, courier labels - I did those daily before I started automating them.",
+    note: "Management Engineering at Warsaw University of Technology, IPMA Student certificate. I start with questions about the process, not with a quote.",
     servicesKicker: "What I do",
   },
 
   services: [
-    {
-      key: "integrations",
-      title: "Shop and ERP integrations",
-      body: "Allegro, Shoper, BaseLinker, Comarch, Subiekt. Orders, stock, invoices and labels moved without anyone retyping them.",
-    },
-    {
-      key: "documents",
-      title: "Document flow",
-      body: "Invoices from PDF into the system, spreadsheet imports, KSeF. Anywhere somebody currently copies data from one window into another.",
-    },
-    {
-      key: "monitoring",
-      title: "Monitoring and alerts",
-      body: "Watching a mailbox, listings, prices or order status. What matters reaches a phone. Everything else stays quiet.",
-    },
-    {
-      key: "reporting",
-      title: "Reports and dashboards",
-      body: "Power BI, SQL, Google Analytics. The numbers in one place, current in the morning, without assembling a spreadsheet by hand every month.",
-    },
+    { key: "integrations", title: "Shop and ERP", line: "Orders, stock and invoices without retyping" },
+    { key: "documents", title: "Documents", line: "Invoices from PDF straight into the system" },
+    { key: "monitoring", title: "Monitoring", line: "What matters reaches a phone. The rest stays quiet." },
+    { key: "reporting", title: "Reporting", line: "The numbers in one place, current in the morning." },
   ],
 
   works: {
     kicker: "Work",
     heading: "What I have built",
-    intro:
-      "Two running systems and one study project. For each I say what was measured and what is a design claim. The numbers come from the systems themselves, not from estimates.",
+    intro: "Two running systems. The numbers come from them, not from estimates.",
     labels: {
       problem: "Problem",
       approach: "Approach",
       result: "Result",
       price: "Price",
-      status: "Status",
-      stack: "Stack",
       measured: "Measured on",
+      prev: "Previous project",
+      next: "Next project",
+      goTo: "Go to project",
     },
   },
 
@@ -323,17 +237,20 @@ const en = {
       key: "mailwatch",
       name: "MailWatch",
       tagline: "Customer inquiries pulled out of a shop mailbox",
-      status: "Deployed at a client, running",
-      problem:
-        "Customer inquiries sat in a shared inbox among mailing lists, SEO pitches and platform notifications. Measured across 4,156 messages over 1,697 days: a customer waited a median of 14.6 hours for a reply, and one in ten waited almost five days. On a marketplace, that sale has already gone somewhere else.",
+      status: "Running at a client",
+      metrics: [
+        { value: "4,156", label: "messages analysed" },
+        { value: "72% → 25%", label: "of mail reaching a human" },
+        { value: "14.6 h", label: "median reply time before" },
+        { value: "0", label: "inquiries lost to the filter" },
+      ],
+      problem: "Inquiries sat in the inbox among mailing lists and platform notifications.",
       approach:
-        "Classification built from the shop's own mail rather than from guessed rules. Staff replies were the ground truth: if somebody answered it, it was a customer. Personal data is stripped before anything reaches a language model, and there is no setting to turn that off. The acknowledgement is a fixed template rather than generated text, so it cannot invent a price or a delivery date.",
-      result:
-        "A quarter of the mail now reaches a human, down from 72%. Across 4,156 messages, every message the filter drops after a staff reply was a transactional notice or a sales pitch, never a customer question. The acknowledgement goes out within a minute and the inquiry lands on the owner's phone. The program pings an external monitor, so a stall is visible; it has already caught one real failure.",
-      measured:
-        "4,156 messages, 1,697 days, 374 confirmed customers. Median and percentiles computed from actual sent replies.",
-      price: "3,000 - 6,000 PLN to build, 200 - 400 PLN a month to monitor",
-      stack: ["Node.js", "IMAP", "Telegram Bot API", "LLM", "healthchecks.io"],
+        "Filter built from the shop's own mail. Personal data stripped before the model, with no way to turn it off.",
+      result: "Every inquiry lands on the owner's phone. Everything else stays quiet.",
+      measured: "4,156 messages over 1,697 days, 374 confirmed customers.",
+      price: "3,000 - 6,000 PLN to build, 200 - 400 PLN / month",
+      stack: ["Node.js", "IMAP", "Telegram", "LLM"],
       link: "https://github.com/kyaraslav-cell/mailwatch",
       linkLabel: "Code on GitHub",
     },
@@ -342,117 +259,63 @@ const en = {
       name: "LeadFind",
       tagline: "Public sources watched, scored, and decided on from a phone",
       status: "Running since August 2026",
-      problem:
-        "Public sources have to be checked daily to react in time. The same problem belongs to any firm tracking tenders, competitor prices or marketplace listing changes. Somebody clicks through the same pages morning and evening.",
+      metrics: [
+        { value: "1,602", label: "leads in the database" },
+        { value: "11", label: "n8n workflows" },
+        { value: "7", label: "sources watched" },
+        { value: "150 MB", label: "instead of 1.5 GB after dropping Docker" },
+      ],
+      problem: "Public sources have to be checked daily to react in time.",
       approach:
-        "Eleven n8n workflows. Sources never touch the database or Telegram; they normalise what they find and post it to a single intake webhook, which is the only place that deduplicates and stores. An analysis queue with retry limits, scoring by a language model, a Telegram interface with one card per offer, a feedback loop that trains the next prompt, and a heartbeat every five minutes.",
-      result:
-        "1,602 leads in the database, eleven workflows, native PostgreSQL instead of Docker, about 150 MB rather than 1.5 GB. One broken scraper cannot take the rest down, because dedup and alert logic lives in exactly one place. Execution history is pruned at two weeks, after it grew to 665 MB.",
-      measured: "1,602 records in the database, 11 workflows, resource figures taken from the running install.",
-      price: "6,000 - 12,000 PLN to build, 300 - 600 PLN a month",
-      stack: ["n8n", "PostgreSQL", "Telegram Bot API", "LLM", "Docker"],
-      legal:
-        "Public business listings only, low polling frequency, provenance stored on every record, no LinkedIn.",
+        "Sources never touch the database. One webhook dedupes and stores, a queue scores, Telegram asks for the decision.",
+      result: "One broken scraper cannot take the rest down. The decision returns and trains the next prompt.",
+      measured: "1,602 records and resource figures from the running install.",
+      price: "6,000 - 12,000 PLN to build, 300 - 600 PLN / month",
+      stack: ["n8n", "PostgreSQL", "Telegram", "LLM"],
+      legal: "Public business listings only, low polling frequency, provenance on every record.",
       link: "",
       linkLabel: "",
-    },
-    {
-      key: "recognition",
-      name: "Face recognition app",
-      tagline: "Study project: Node.js, PostgreSQL, an external API",
-      status: "Study project, live online",
-      problem:
-        "This is not a client deployment and I do not present it as one. It is here to show code outside n8n: my own backend, my own database schema, and handling an external API.",
-      approach:
-        "A Node.js server, accounts and a usage counter in PostgreSQL, face detection through the Clarifai API, and a React front end.",
-      result:
-        "A working application with registration, login and stored history. When a no-code tool hits its limit, this is the level at which I keep going by hand.",
-      measured: "",
-      price: "",
-      stack: ["Node.js", "PostgreSQL", "React", "REST API"],
-      link: "https://recognitionappv2.onrender.com/",
-      linkLabel: "Open the app",
     },
   ],
 
   stack: {
     kicker: "Stack",
     heading: "What I work with",
-    intro:
-      "Grouped the way I use it. The first group is the reason to hire me; the rest exists so the first one works.",
-    groupsKicker: "The full list",
-    groups: [
-      {
-        title: "E-commerce and ERP",
-        items: ["Allegro API", "Shoper", "BaseLinker", "Comarch ERP", "Subiekt", "KSeF"],
-      },
-      {
-        title: "Automation and data",
-        items: ["n8n", "PostgreSQL", "REST API", "Docker", "Power BI", "SQL", "Excel", "Google Analytics"],
-      },
-      {
-        title: "Code",
-        items: ["Node.js", "TypeScript", "JavaScript", "React", "Git", "Three.js"],
-      },
-      {
-        title: "Language models",
-        items: ["Content classification", "Personal data redaction", "Scoring and triage", "Human in the loop"],
-      },
-    ],
+    intro: "Drag any sphere to turn it.",
   },
 
   trust: {
     kicker: "Security",
     heading: "What happens to your data",
     intro:
-      "The most common reason a small business does not buy automation is the fear that its data leaves for somewhere it cannot be pulled back from. So this is how I work:",
+      "The most common reason a small business does not buy automation is the fear that its data leaves for somewhere it cannot be pulled back from.",
     points: [
-      {
-        title: "Everything on your infrastructure",
-        body: "The automation runs on your server or your machine. There is no external platform holding your orders and raising its price in a year.",
-      },
-      {
-        title: "Personal data stripped before the model",
-        body: "Before anything reaches a language model, email addresses, phone numbers, national ID and tax numbers, bank accounts and addresses are removed. The model needs to know what, not who.",
-      },
-      {
-        title: "A data processing agreement",
-        body: "For any job touching your customers' data we sign a processing agreement (GDPR Article 28). I have the template ready before the first call.",
-      },
-      {
-        title: "Secrets out of the code",
-        body: "Passwords and API keys in environment variables, never in the repository. A separate key per service rather than one that opens everything.",
-      },
-      {
-        title: "n8n is not left open to the internet",
-        body: "The panel sits behind a reverse proxy, HTTPS on a real domain, 2FA on the owner account, and execution history pruned, because it holds customer data and grows without limit.",
-      },
-      {
-        title: "A human on decisions about people",
-        body: "Nothing concerning a specific person is settled purely automatically (GDPR Article 22). It is always possible to point at where the human sits in the process.",
-      },
+      { title: "On your server", body: "No outside platform holds your orders." },
+      { title: "Personal data stripped", body: "Before anything reaches a model. No opt-out." },
+      { title: "Processing agreement", body: "GDPR Article 28. Template ready before the call." },
+      { title: "Keys out of the code", body: "Environment variables, one key per service." },
+      { title: "n8n behind a proxy", body: "HTTPS, 2FA, execution history pruned." },
+      { title: "A human in the loop", body: "GDPR Article 22. Always clear where they sit." },
     ],
   },
 
   pricing: {
     kicker: "Pricing",
     heading: "What it costs",
-    intro:
-      "Ranges, so the scale is clear. The actual figure comes after a conversation about the process, because a quote without understanding the process is a guess.",
+    intro: "Ranges, so the scale is clear.",
     rows: [
       { scope: "A single automation", detail: "One process, one source, one destination", price: "1,500 - 4,000 PLN" },
       { scope: "Shop and ERP integration", detail: "Orders, stock, documents, error handling", price: "4,000 - 12,000 PLN" },
       { scope: "Multi-step system with AI", detail: "Several sources, classification, interface, monitoring", price: "8,000 - 20,000 PLN" },
       { scope: "Maintenance and monitoring", detail: "Response to failures, changes in vendor APIs", price: "200 - 600 PLN / month" },
     ],
-    note: "The first call and mapping the process cost nothing. If it turns out a setting in a system you already own solves the problem, I will say so rather than invoice you.",
+    note: "The first call and mapping the process cost nothing. If a setting in a system you already own solves it, I will say so rather than invoice you.",
   },
 
   contact: {
     kicker: "Contact",
     heading: "Tell me what breaks",
-    intro:
-      "The best start is a description of the process: who clicks what today, how many times a day, and what happens when something goes wrong. I reply within one working day.",
+    intro: "Describe the process: who clicks what today, how often, and what happens when it goes wrong.",
     name: "Name",
     namePlaceholder: "What should I call you?",
     email: "Email",

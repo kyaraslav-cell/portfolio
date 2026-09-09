@@ -18,7 +18,7 @@ const LangToggle = ({ className = "" }) => {
   const { lang, setLang } = useLang();
   return (
     <div
-      className={`flex items-center rounded-full border border-indigo-500/40 overflow-hidden text-[13px] ${className}`}
+      className={`flex items-center overflow-hidden rounded-full border border-line text-[12px] ${className}`}
     >
       {["pl", "en"].map((code) => (
         <button
@@ -26,8 +26,8 @@ const LangToggle = ({ className = "" }) => {
           type="button"
           onClick={() => setLang(code)}
           aria-pressed={lang === code}
-          className={`px-3 py-1 uppercase transition-colors duration-200 ${
-            lang === code ? "bg-[#8d48e6] text-white" : "text-secondary hover:text-white"
+          className={`px-3 py-1.5 uppercase tracking-wider transition-colors duration-500 ease-fluid ${
+            lang === code ? "bg-accent text-white" : "text-secondary hover:text-white"
           }`}
         >
           {code}
@@ -61,7 +61,7 @@ const Navbar = () => {
   return (
     <nav
       className={`${styles.paddingX} w-full flex items-center py-4 fixed top-0 z-30 transition-colors duration-300 ${
-        scrolled ? "bg-primary/95 backdrop-blur-sm border-b border-indigo-500/15" : "bg-transparent"
+        scrolled ? "border-b border-line bg-primary/80 backdrop-blur-xl" : "bg-transparent"
       }`}
     >
       <div className="w-full flex justify-between items-center gap-6 max-w-7xl mx-auto">
@@ -74,8 +74,8 @@ const Navbar = () => {
           }}
         >
           <img src={logo} alt="" className="w-12 h-12 object-contain" />
-          <span className="text-white text-[16px] font-bold leading-tight">
-            Jarosław<span className="sm:inline hidden"> Krukowski</span>
+          <span className="font-display text-[16px] font-bold leading-tight text-white">
+            Jarosław<span className="hidden sm:inline"> Krukowski</span>
           </span>
         </a>
 
@@ -86,7 +86,7 @@ const Navbar = () => {
                 key={link.id}
                 className={`${
                   active === link.id ? "text-white" : "text-secondary"
-                } hover:text-white text-[16px] font-medium cursor-pointer transition-colors duration-200`}
+                } cursor-pointer text-[15px] font-medium transition-colors duration-500 ease-fluid hover:text-white`}
                 onClick={() => setActive(link.id)}
               >
                 <a href={`#${link.id}`}>{link.title}</a>
@@ -127,7 +127,7 @@ const Navbar = () => {
                       setActive(link.id);
                       setOpen(false);
                     }}
-                    className="text-white text-[28px] font-medium hover:text-[#b58bff] transition-colors"
+                    className="font-display text-[28px] font-semibold text-white transition-colors duration-500 ease-fluid hover:text-accent-soft"
                   >
                     {link.title}
                   </a>

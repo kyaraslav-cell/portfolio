@@ -176,7 +176,7 @@ const Arm = ({ frozen }) => {
 // Dragging turns the arm about its own column. Orbiting the camera instead
 // swings it around the middle of the page and out of frame, which is what it
 // used to do.
-const Scene = ({ stacked, frozen, spin }) => {
+const Scene = ({ compact, frozen, spin }) => {
   const pivot = useRef();
 
   useFrame(() => {
@@ -190,10 +190,7 @@ const Scene = ({ stacked, frozen, spin }) => {
   });
 
   return (
-    <group
-      position={stacked ? [0, -2.9, 0] : [2.7, -2.9, -1]}
-      scale={stacked ? 0.82 : 0.7}
-    >
+    <group position={[0, -2.3, 0]} scale={compact ? 0.62 : 0.72}>
       <group ref={pivot}>
         <Arm frozen={frozen} />
         <Conveyor frozen={frozen} />
@@ -203,20 +200,18 @@ const Scene = ({ stacked, frozen, spin }) => {
 };
 
 const RobotArmCanvas = () => {
-  const [stacked, setStacked] = useState(false);
+  const [compact, setCompact] = useState(false);
   const [frozen, setFrozen] = useState(false);
   const [dragging, setDragging] = useState(false);
   const spin = useRef({ yaw: BASE_YAW, velocity: 0, dragging: false, lastX: 0 });
 
   useEffect(() => {
-    // Matches the lg breakpoint, where Hero switches from a stacked block to
-    // the full-bleed layer behind the copy.
-    const layout = window.matchMedia("(max-width: 1023px)");
+    const layout = window.matchMedia("(max-width: 640px)");
     const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setStacked(layout.matches);
+    setCompact(layout.matches);
     setFrozen(motion.matches);
 
-    const onLayout = (e) => setStacked(e.matches);
+    const onLayout = (e) => setCompact(e.matches);
     const onMotion = (e) => setFrozen(e.matches);
     layout.addEventListener("change", onLayout);
     motion.addEventListener("change", onMotion);
@@ -254,7 +249,7 @@ const RobotArmCanvas = () => {
       frameloop="always"
       shadows
       dpr={[1, 1.8]}
-      camera={{ position: [0, 1.2, 11], fov: 32 }}
+      camera={{ position: [0, 0.9, 11], fov: 26 }}
       gl={{ preserveDrawingBuffer: true }}
       // touch-pan-y keeps vertical scrolling with the page while horizontal
       // drags turn the arm.
@@ -270,7 +265,7 @@ const RobotArmCanvas = () => {
         <directionalLight position={[5, 8, 6]} intensity={1.6} castShadow shadow-mapSize={1024} />
         <pointLight position={[-4, 2, 3]} intensity={18} color={ACCENT} distance={14} />
         <pointLight position={[3, 1, 4]} intensity={10} color={CARGO} distance={12} />
-        <Scene stacked={stacked} frozen={frozen} spin={spin} />
+        <Scene compact={compact} frozen={frozen} spin={spin} />
       </Suspense>
       <Preload all />
     </Canvas>

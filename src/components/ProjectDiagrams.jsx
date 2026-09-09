@@ -1,15 +1,19 @@
-// Each project card carries a schematic of the system instead of a screenshot.
-// A screenshot of MailWatch or LeadFind would contain real customer data, and
-// publishing that on the page whose job is to prove data can be trusted to me
-// would be the wrong trade. The schematic also survives a UI change.
-
+import { useReducedMotion } from "framer-motion";
 import { useLang } from "../context/Lang";
+
+// Each project card carries a schematic instead of a screenshot. A screenshot
+// of MailWatch or LeadFind contains real customer data, and publishing that on
+// the page whose job is to prove data can be trusted here would be the wrong
+// trade. The schematic also survives a UI change.
+//
+// The connector paths are declared once and shared by the drawn line and the
+// pulse that travels along it, so a signal can never drift off its wire.
 
 const L = {
   pl: {
     mailbox: "Skrzynka",
     rules: "Reguły + LLM",
-    cleaned: "dane wyczyszczone",
+    cleaned: "dane czyszczone",
     passed: "25% poczty",
     dropped: "Pominięte",
     droppedSub: "75% poczty",
@@ -23,11 +27,7 @@ const L = {
     queue: "Kolejka + ocena",
     queueSub: "model językowy",
     decision: "decyzja właściciela",
-    loop: "pętla zwrotna uczy kolejny prompt",
-    study: "Projekt studyjny",
-    ui: "interfejs",
-    accounts: "konta, historia",
-    own: "własny backend i schemat bazy",
+    loop: "decyzja uczy kolejny prompt",
   },
   en: {
     mailbox: "Mailbox",
@@ -46,61 +46,59 @@ const L = {
     queue: "Queue + scoring",
     queueSub: "language model",
     decision: "owner decides",
-    loop: "feedback loop trains the next prompt",
-    study: "Study project",
-    ui: "interface",
-    accounts: "accounts, history",
-    own: "own backend and schema",
+    loop: "the decision trains the next prompt",
   },
 };
 
 const STROKE = "#5b4b8a";
-const TEXT = "#cfc9e6";
+const TEXT = "#e6e1f5";
 const DIM = "#8b83ad";
 const ACCENT = "#915eff";
 const GOOD = "#00cea8";
+const FONT = "Inter, system-ui, sans-serif";
 
-// Coordinates arrive from JSX as strings, so they are coerced before any
-// arithmetic: "94" + 20 concatenates and puts the label off the canvas.
-const Box = ({ x, y, w = 86, h = 40, label, sub, accent }) => {
+const Box = ({ x, y, w = 86, h = 40, label, sub, accent, pulse }) => {
   const left = Number(x);
   const top = Number(y);
   const width = Number(w);
   const height = Number(h);
   const midX = left + width / 2;
   const midY = top + height / 2;
+  const colour = accent || STROKE;
 
   return (
-    <g>
+    <g className="diagram-node">
+      {pulse && (
+        <rect
+          x={left}
+          y={top}
+          width={width}
+          height={height}
+          rx="9"
+          fill="none"
+          stroke={colour}
+          strokeWidth="1"
+          opacity="0"
+        >
+          <animate attributeName="opacity" values="0;0.55;0" dur="2.6s" repeatCount="indefinite" />
+          <animate attributeName="stroke-width" values="1;3.5;1" dur="2.6s" repeatCount="indefinite" />
+        </rect>
+      )}
       <rect
         x={left}
         y={top}
         width={width}
         height={height}
-        rx="8"
-        fill="#171233"
-        stroke={accent || STROKE}
+        rx="9"
+        fill="#16112f"
+        stroke={colour}
         strokeWidth="1.2"
       />
-      <text
-        x={midX}
-        y={sub ? midY - 2 : midY + 4}
-        textAnchor="middle"
-        fill={TEXT}
-        fontSize="11"
-        fontFamily="Poppins, sans-serif"
-      >
+      <text x={midX} y={sub ? midY - 2 : midY + 4} textAnchor="middle" fill={TEXT} fontSize="11" fontFamily={FONT} fontWeight="500">
         {label}
       </text>
       {sub && (
-        <text
-          x={midX}
-          y={midY + 12}
-          textAnchor="middle"
-          fill={DIM}
-          fontSize="9"
-          fontFamily="Poppins, sans-serif"
-        >
+        <text x={midX} y={midY + 12} textAnchor="middle" fill={DIM} fontSize="9" fontFamily={FONT}>
           {sub}
         </text>
       )}
@@ -108,128 +106,159 @@ const Box = ({ x, y, w = 86, h = 40, label, sub, accent }) => {
   );
 };
 
-const Arrow = ({ d, color = STROKE, dashed }) => (
+const Wire = ({ d, colour = STROKE, dashed }) => (
   <path
     d={d}
     fill="none"
-    stroke={color}
-    strokeWidth="1.3"
+    stroke={colour}
+    strokeWidth="1.2"
+    strokeOpacity={dashed ? 0.55 : 0.8}
     strokeDasharray={dashed ? "4 4" : undefined}
-    markerEnd="url(#head)"
+    strokeLinecap="round"
   />
 );
 
-const Defs = () => (
-  <defs>
-    <marker id="head" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="6" markerHeight="6" orient="auto">
-      <path d="M0 0 L8 4 L0 8 z" fill={STROKE} />
-    </marker>
-  </defs>
-);
+// A packet of work moving down a wire. Two circles: a soft halo and a core.
+const Pulse = ({ d, colour = ACCENT, dur = 2.6, delay = 0 }) => {
+  const motion = (extra) => (
+    <animateMotion dur={`${dur}s`} begin={`${delay}s`} repeatCount="indefinite" path={d} {...extra} />
+  );
+  return (
+    <g>
+      <circle r="5" fill={colour} opacity="0.18">
+        {motion()}
+      </circle>
+      <circle r="2.4" fill={colour}>
+        {motion()}
+        <animate
+          attributeName="opacity"
+          values="0;1;1;0"
+          keyTimes="0;0.12;0.85;1"
+          dur={`${dur}s`}
+          begin={`${delay}s`}
+          repeatCount="indefinite"
+        />
+      </circle>
+    </g>
+  );
+};
 
 const Frame = ({ children }) => (
-  <svg viewBox="0 0 400 230" className="w-full h-auto block" role="img">
-    <rect x="0" y="0" width="400" height="230" fill="#0e0a20" />
-    <Defs />
+  <svg viewBox="0 0 400 230" className="block h-auto w-full" role="img">
+    <rect x="0" y="0" width="400" height="230" fill="transparent" />
     {children}
   </svg>
+);
+
+const Caption = ({ x, y, children, anchor = "middle" }) => (
+  <text x={x} y={y} textAnchor={anchor} fill={DIM} fontSize="9.5" fontFamily={FONT}>
+    {children}
+  </text>
 );
 
 export const MailWatchDiagram = () => {
   const { lang } = useLang();
   const d = L[lang];
+  const still = useReducedMotion();
+
+  const inbox = "M100 114 H132";
+  const toTelegram = "M224 110 C248 100, 252 74, 276 70";
+  const toDropped = "M224 118 C248 128, 252 154, 276 158";
+  const feedback = "M328 90 V196 H178 V134";
+
   return (
-  <Frame>
-    <text x="20" y="26" fill={DIM} fontSize="10" fontFamily="Poppins, sans-serif">
-      MailWatch
-    </text>
+    <Frame>
+      <Caption x="18" y="24" anchor="start">
+        MailWatch
+      </Caption>
+      <Caption x="382" y="24" anchor="end">
+        {d.volume}
+      </Caption>
 
-    <Box x="16" y="94" w="84" label={d.mailbox} sub="IMAP" />
-    <Arrow d="M104 114 H128" />
-    <Box x="132" y="94" w="92" label={d.rules} sub={d.cleaned} accent={ACCENT} />
+      <Wire d={inbox} />
+      <Wire d={toTelegram} colour={GOOD} />
+      <Wire d={toDropped} dashed />
+      <Wire d={feedback} dashed colour={GOOD} />
 
-    <Arrow d="M228 108 C250 100, 250 74, 272 70" color={GOOD} />
-    <Arrow d="M228 120 C250 128, 250 154, 272 158" dashed />
+      {!still && (
+        <>
+          <Pulse d={inbox} dur={2.2} />
+          <Pulse d={toTelegram} colour={GOOD} dur={2.6} delay={0.9} />
+          <Pulse d={toDropped} colour={STROKE} dur={2.6} delay={1.6} />
+          <Pulse d={feedback} colour={GOOD} dur={4.2} delay={2.2} />
+        </>
+      )}
 
-    <Box x="276" y="50" w="104" label="Telegram" sub={d.passed} accent={GOOD} />
-    <Box x="276" y="138" w="104" label={d.dropped} sub={d.droppedSub} />
+      <Box x="16" y="94" w="84" label={d.mailbox} sub="IMAP" />
+      <Box x="132" y="94" w="92" label={d.rules} sub={d.cleaned} accent={ACCENT} pulse={!still} />
+      <Box x="276" y="50" w="104" label="Telegram" sub={d.passed} accent={GOOD} />
+      <Box x="276" y="138" w="104" label={d.dropped} sub={d.droppedSub} />
 
-    <path d="M178 138 V178 H60 V132" fill="none" stroke={STROKE} strokeWidth="1.1" strokeDasharray="3 4" />
-    <text x="120" y="196" textAnchor="middle" fill={DIM} fontSize="9" fontFamily="Poppins, sans-serif">
-      {d.truth}
-    </text>
-
-    <text x="384" y="26" textAnchor="end" fill={DIM} fontSize="10" fontFamily="Poppins, sans-serif">
-      {d.volume}
-    </text>
-  </Frame>
+      <Caption x="200" y="216">
+        {d.truth}
+      </Caption>
+    </Frame>
   );
 };
 
 export const LeadFindDiagram = () => {
   const { lang } = useLang();
   const d = L[lang];
+  const still = useReducedMotion();
+
+  const s1 = "M94 59 C118 59, 120 92, 140 96";
+  const s2 = "M94 95 H140";
+  const s3 = "M94 131 C118 131, 120 104, 140 100";
+  const store = "M186 118 V152";
+  const toQueue = "M232 98 H266";
+  const toPhone = "M323 118 V140";
+  const feedback = "M266 158 H244 V200 H186 V186";
+
   return (
-  <Frame>
-    <text x="20" y="26" fill={DIM} fontSize="10" fontFamily="Poppins, sans-serif">
-      LeadFind
-    </text>
+    <Frame>
+      <Caption x="18" y="24" anchor="start">
+        LeadFind
+      </Caption>
+      <Caption x="382" y="24" anchor="end">
+        {d.sources}
+      </Caption>
 
-    <Box x="14" y="46" w="80" h="26" label={`${d.source} 1`} />
-    <Box x="14" y="82" w="80" h="26" label={`${d.source} 2`} />
-    <Box x="14" y="118" w="80" h="26" label={`${d.source} 3`} />
-    <text x="54" y="164" textAnchor="middle" fill={DIM} fontSize="9" fontFamily="Poppins, sans-serif">
-      {d.sources}
-    </text>
+      <Wire d={s1} />
+      <Wire d={s2} />
+      <Wire d={s3} />
+      <Wire d={store} />
+      <Wire d={toQueue} />
+      <Wire d={toPhone} colour={GOOD} />
+      <Wire d={feedback} dashed colour={GOOD} />
 
-    <Arrow d="M98 59 C120 59, 118 92, 136 96" />
-    <Arrow d="M98 95 H136" />
-    <Arrow d="M98 131 C120 131, 118 102, 136 100" />
+      {!still && (
+        <>
+          <Pulse d={s1} dur={2.8} delay={0} />
+          <Pulse d={s2} dur={2.8} delay={0.6} />
+          <Pulse d={s3} dur={2.8} delay={1.2} />
+          <Pulse d={store} dur={2.2} delay={1.9} />
+          <Pulse d={toQueue} dur={2.2} delay={2.1} />
+          <Pulse d={toPhone} colour={GOOD} dur={2.2} delay={2.7} />
+          <Pulse d={feedback} colour={GOOD} dur={4} delay={3.2} />
+        </>
+      )}
 
-    <Box x="140" y="78" w="92" label={d.intake} sub={d.intakeSub} accent={ACCENT} />
-    <Arrow d="M186 122 V148" />
-    <Box x="140" y="152" w="92" h="34" label="PostgreSQL" sub={d.leads} />
+      <Box x="14" y="46" w="80" h="26" label={`${d.source} 1`} />
+      <Box x="14" y="82" w="80" h="26" label={`${d.source} 2`} />
+      <Box x="14" y="118" w="80" h="26" label={`${d.source} 3`} />
+      <Box x="140" y="78" w="92" label={d.intake} sub={d.intakeSub} accent={ACCENT} pulse={!still} />
+      <Box x="140" y="152" w="92" h="34" label="PostgreSQL" sub={d.leads} />
+      <Box x="266" y="78" w="114" label={d.queue} sub={d.queueSub} />
+      <Box x="266" y="140" w="114" h="36" label="Telegram" sub={d.decision} accent={GOOD} />
 
-    <Arrow d="M236 98 H262" />
-    <Box x="266" y="78" w="114" label={d.queue} sub={d.queueSub} />
-    <Arrow d="M323 122 C323 150, 300 158, 282 158" />
-    <Box x="266" y="140" w="114" h="36" label="Telegram" sub={d.decision} accent={GOOD} />
-
-    <path d="M266 158 H244 V196 H186 V190" fill="none" stroke={GOOD} strokeWidth="1.1" strokeDasharray="3 4" />
-    <text x="196" y="212" textAnchor="middle" fill={DIM} fontSize="9" fontFamily="Poppins, sans-serif">
-      {d.loop}
-    </text>
-  </Frame>
-  );
-};
-
-export const RecognitionDiagram = () => {
-  const { lang } = useLang();
-  const d = L[lang];
-  return (
-  <Frame>
-    <text x="20" y="26" fill={DIM} fontSize="10" fontFamily="Poppins, sans-serif">
-      {d.study}
-    </text>
-
-    <Box x="24" y="94" w="92" label="React" sub={d.ui} />
-    <Arrow d="M120 114 H150" />
-    <Box x="154" y="94" w="92" label="Node.js" sub="API" accent={ACCENT} />
-    <Arrow d="M250 114 H280" />
-    <Box x="284" y="94" w="92" label="PostgreSQL" sub={d.accounts} />
-
-    <Arrow d="M200 90 V56" />
-    <Box x="154" y="26" w="92" h="30" label="Clarifai API" />
-
-    <text x="200" y="200" textAnchor="middle" fill={DIM} fontSize="9" fontFamily="Poppins, sans-serif">
-      {d.own}
-    </text>
-  </Frame>
+      <Caption x="200" y="220">
+        {d.loop}
+      </Caption>
+    </Frame>
   );
 };
 
 export const projectDiagrams = {
   mailwatch: MailWatchDiagram,
   leadfind: LeadFindDiagram,
-  recognition: RecognitionDiagram,
 };

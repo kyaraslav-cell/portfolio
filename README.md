@@ -24,8 +24,10 @@ Opens on http://localhost:5173. `npm run build` produces `dist/`.
 | `src/constans/content.js` | Every piece of copy, PL and EN, plus contact details. Edit here, not in components. |
 | `src/context/Lang.jsx` | Language state, stored in `localStorage`, drives `<title>` and the meta description too. |
 | `src/components/canvas/RobotArm.jsx` | The hero scene. Built from Three.js primitives, not a downloaded model. Drag to turn it. |
+| `src/components/canvas/Planets.jsx` | The whole stack section: 20 spheres in one WebGL context, each draggable. |
 | `src/components/ProjectDiagrams.jsx` | The schematic on each case study card. |
 | `src/components/Icons.jsx` | UI icons, inline SVG. |
+| `src/components/ui/` | Button, SpotlightCard, Carousel. |
 | `src/constans/tech.js` | The brand icons on the spinning balls. |
 | `src/components/Reveal.jsx` | Reveal-on-scroll. Every animated element uses it. |
 | `src/components/LazyMount.jsx` | Mounts a WebGL canvas only once it is near the viewport. |
@@ -34,7 +36,42 @@ Opens on http://localhost:5173. `npm run build` produces `dist/`.
 Sections in order: hero, about and services, case studies, stack, data
 handling, pricing, contact.
 
+## Design
+
+Type is Manrope for display and Inter for text: upright, geometric, nothing
+scripted. One easing everywhere (`ease-fluid`, a slow-out curve with no
+bounce), longer durations than the template used, and hover states that lift
+and warm a border rather than bounce.
+
+Components follow the patterns those component registries publish - gradient
+border with a shimmer sweep, pointer-following spotlight card, scroll-snap
+carousel - written directly against Tailwind and this project's tokens. The
+registry CLI expects a shadcn/ui install with `components.json`, and adding
+Radix plus that scaffolding to a seven-section site costs more than the three
+components are worth.
+
+Sections are centred, and the copy is deliberately short: icons and measured
+numbers carry the meaning, and the case studies lead with four figures each.
+
 ## Decisions worth knowing
+
+**The stack section is one canvas, not twenty.** One WebGL context per sphere
+is what the template did; twenty of them sit on the browser's context limit and
+start evicting each other. A single orthographic canvas lays the grid out in
+pixels, so the columns stay responsive and each sphere still hovers and spins
+under the pointer on its own. The whole page now uses four contexts.
+
+**Every technology appears exactly once.** The spheres are the entire stack
+section; there is no second list underneath repeating the same names.
+
+**Reveal-on-scroll is CSS, not a JS animation.** An IntersectionObserver adds a
+class and a transition does the rest, so an element reaches its final state
+even when no animation frame runs - a background tab, reduced motion, a script
+that failed. Content can never be left invisible waiting for a frame.
+
+**The schematics carry live signals.** Pulses travel the same path data the
+drawn wire uses, so a signal cannot drift off its wire, and the node doing the
+work carries a slow ring. Both are suppressed under `prefers-reduced-motion`.
 
 **Dragging turns the arm, it does not orbit the camera.** OrbitControls rotates
 the camera around the middle of the scene, which swung the arm out of frame.
@@ -42,12 +79,10 @@ The pointer handlers now add yaw to the arm's own pivot and let it coast to a
 stop. `touch-action: pan-y` on the canvas keeps a vertical swipe scrolling the
 page while a horizontal drag turns the arm.
 
-**The hero stacks below `lg`.** On a phone the copy fills the screen, so the
-arm gets its own block underneath instead of sitting behind the text, where it
-collided with the buttons and was barely visible. From `lg` up it goes back to
-a full-bleed layer behind the copy.
-
-**Reveal-on-scroll is per element, not per section.** See the bug note below.
+**The hero is centred, with the arm below the copy at every width.** The arm
+used to sit behind the text on desktop, and the overlay spanned the full width,
+so it swallowed every pointer event and the arm could not be dragged at all
+above `lg`. Stacking also makes it fully visible on a phone.
 
 **Brand icons come from simple-icons (CC0)**, recoloured into `src/assets/tech`
 by `npm run icons`. The package is a devDependency: the site ships plain SVG
@@ -97,6 +132,11 @@ hourly rate invites comparison with people charging 30 zł/h.
 - **Diagram box labels were invisible.** JSX passes `x="94"` as a string, so
   `x + w / 2` concatenated instead of adding and threw every label thousands of
   units outside the viewBox. Coordinates are coerced with `Number()` now.
+- **The hero canvas collapsed to 150px.** `flex-1` on a fixed-height child in a
+  constrained flex column beats the height and shrinks it. Explicit height and
+  `shrink-0` now.
+- **The hero overlay blocked the arm.** It was `lg:absolute lg:inset-0`, so it
+  covered the canvas edge to edge and no drag ever reached it.
 
 ## Not done yet
 

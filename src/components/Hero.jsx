@@ -1,70 +1,73 @@
 import { motion } from "framer-motion";
 import { styles } from "../styles";
 import { RobotArmCanvas } from "./canvas";
+import Button from "./ui/Button";
 import { useLang } from "../context/Lang";
 
+// Copy on top, arm underneath, both centred. The arm used to sit behind the
+// text, which meant the overlay swallowed every pointer event and the arm
+// could not be dragged at all above the lg breakpoint.
 const Hero = () => {
   const { t } = useLang();
 
   return (
-    <section className="relative w-full mx-auto lg:h-screen">
-      <div
-        className={`${styles.paddingX} relative z-10 max-w-7xl mx-auto flex flex-row items-start gap-5 pt-28 pb-4 lg:pt-0 lg:pb-0 lg:absolute lg:inset-0 lg:top-[110px]`}
-      >
-        <div className="flex flex-col justify-center items-center mt-5 shrink-0">
-          <div className="w-5 h-5 rounded-full bg-[#8d48e6]" />
-          <div className="w-1 h-40 sm:h-80 violet-gradient" />
-        </div>
-
-        <div className="max-w-xl lg:max-w-2xl">
-          <p className="text-secondary tracking-[0.2em] uppercase text-[12px] sm:text-[14px]">
+    <section className="relative mx-auto flex min-h-screen w-full flex-col justify-center">
+      <div className={`${styles.paddingX} relative z-10 mx-auto w-full max-w-3xl pt-32 text-center sm:pt-36`}>
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <p className="text-[12px] uppercase tracking-[0.32em] text-secondary sm:text-[13px]">
             {t.hero.greeting}
           </p>
-          <h1 className={`${styles.heroHeadText} text-white`}>{t.hero.headline}</h1>
-          <p className={`${styles.heroSubText} mt-4 text-[#dfd9ff] max-w-2xl`}>{t.hero.sub}</p>
+          <h1 className={`${styles.heroHeadText} text-balance`}>{t.hero.headline}</h1>
+          <p className={`${styles.heroSubText} mx-auto mt-6 max-w-xl`}>{t.hero.sub}</p>
+        </motion.div>
 
-          <ul className="mt-7 flex flex-wrap gap-2.5">
-            {t.hero.chips.map((chip) => (
-              <li
-                key={chip}
-                className="text-[12px] sm:text-[13px] text-secondary border border-indigo-500/30 bg-tertiary/60 backdrop-blur-sm rounded-full px-3.5 py-1.5"
-              >
-                {chip}
-              </li>
-            ))}
-          </ul>
+        <motion.ul
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-9 flex flex-wrap justify-center gap-2.5"
+        >
+          {t.hero.chips.map((chip) => (
+            <li
+              key={chip}
+              className="rounded-full border border-line bg-white/[0.03] px-4 py-1.5 text-[12px] text-secondary backdrop-blur-sm transition-colors duration-500 ease-fluid hover:border-line-strong hover:text-white sm:text-[13px]"
+            >
+              {chip}
+            </li>
+          ))}
+        </motion.ul>
 
-          <div className="mt-8 flex flex-wrap gap-4">
-            <a
-              href="#projects"
-              className="bg-[#8d48e6] hover:bg-[#7a35d6] text-white font-medium rounded-xl px-6 py-3 transition-colors duration-200"
-            >
-              {t.hero.ctaPrimary}
-            </a>
-            <a
-              href="#contact"
-              className="border border-indigo-500/40 hover:border-indigo-500 text-white font-medium rounded-xl px-6 py-3 transition-colors duration-200"
-            >
-              {t.hero.ctaSecondary}
-            </a>
-          </div>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.22, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-10 flex flex-wrap justify-center gap-4"
+        >
+          <Button href="#projects">{t.hero.ctaPrimary}</Button>
+          <Button href="#contact" variant="ghost">
+            {t.hero.ctaSecondary}
+          </Button>
+        </motion.div>
       </div>
 
-      {/* Its own block below the copy on small screens, a full-bleed layer
-          behind it from lg up. */}
-      <div className="relative h-[320px] sm:h-[400px] w-full lg:absolute lg:inset-0 lg:h-full lg:z-0">
+      {/* No flex-1 here: in a constrained flex column it wins over the height
+          and collapses the canvas. */}
+      <div className="relative mt-4 h-[300px] w-full shrink-0 sm:mt-6 sm:h-[400px] lg:h-[440px]">
         <RobotArmCanvas />
       </div>
-      <p className="lg:hidden pb-8 text-center text-[11px] text-secondary/70">{t.hero.dragHint}</p>
 
-      <div className="hidden lg:flex absolute bottom-10 w-full justify-center items-center pointer-events-none">
-        <a href="#about" className="pointer-events-auto">
-          <div className="w-[35px] h-[64px] rounded-3xl border-[4px] border-secondary flex justify-center items-start p-2 opacity-75">
+      <div className="relative z-10 flex flex-col items-center gap-3 pb-10">
+        <p className="text-[11px] tracking-[0.14em] text-secondary/70">{t.hero.dragHint}</p>
+        <a href="#about" aria-label={t.nav.about}>
+          <div className="flex h-[52px] w-[28px] items-start justify-center rounded-full border-2 border-secondary/50 p-1.5 transition-colors duration-500 ease-fluid hover:border-accent">
             <motion.div
-              animate={{ y: [0, 24, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity, repeatType: "loop" }}
-              className="w-3 h-3 rounded-full bg-secondary mb-1"
+              animate={{ y: [0, 18, 0] }}
+              transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+              className="h-2 w-2 rounded-full bg-secondary"
             />
           </div>
         </a>

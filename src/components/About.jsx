@@ -1,23 +1,19 @@
-import Tilt from "react-parallax-tilt";
 import { styles } from "../styles";
 import SectionWrapper from "../hoc/SectionWrapper";
 import Reveal, { SectionHeading } from "./Reveal";
+import SpotlightCard from "./ui/SpotlightCard";
 import { serviceIcons } from "./Icons";
 import { useLang } from "../context/Lang";
 
-const ServiceCard = ({ index, title, body, icon: Icon }) => (
-  <Reveal delay={0.06 * index} className="w-full sm:w-[280px]">
-    <Tilt tiltMaxAngleX={6} tiltMaxAngleY={6} className="h-full">
-      <div className="w-full green-pink-gradient p-[1px] shadow-card rounded-[20px] h-full">
-        <div className="bg-tertiary rounded-[20px] py-8 px-7 min-h-[260px] h-full flex flex-col gap-4">
-          <span className="text-[#b58bff]">
-            <Icon className="w-9 h-9" />
-          </span>
-          <h3 className="text-[18px] text-white font-bold leading-tight">{title}</h3>
-          <p className="text-secondary text-[14px] leading-[22px]">{body}</p>
-        </div>
-      </div>
-    </Tilt>
+const ServiceCard = ({ index, title, line, icon: Icon }) => (
+  <Reveal delay={0.06 * index}>
+    <SpotlightCard className="h-full px-7 py-10 text-center">
+      <span className="mx-auto mb-6 grid h-[72px] w-[72px] place-items-center rounded-2xl border border-line bg-accent/10 text-accent-soft transition-transform duration-500 ease-fluid group-hover:scale-110">
+        <Icon className="h-9 w-9" />
+      </span>
+      <h3 className="font-display text-[19px] font-bold text-white">{title}</h3>
+      <p className="mx-auto mt-2 max-w-[220px] text-[14px] leading-[1.55] text-secondary">{line}</p>
+    </SpotlightCard>
   </Reveal>
 );
 
@@ -33,26 +29,26 @@ const About = () => {
         headingClass={styles.sectionHeadText}
       />
 
-      <div className="mt-6 max-w-3xl flex flex-col gap-5">
-        {t.about.paragraphs.map((p, i) => (
-          <Reveal as="p" key={i} delay={0.05 * i} className="text-secondary text-[16px] leading-[28px]">
-            {p}
-          </Reveal>
-        ))}
-      </div>
+      <Reveal as="p" className={`${styles.sectionIntro} mt-7`}>
+        {t.about.intro}
+      </Reveal>
 
-      <Reveal as="p" className={`${styles.sectionSubText} mt-16`}>
+      <Reveal as="p" className="mx-auto mt-5 max-w-xl text-center text-[14px] leading-[1.65] text-secondary/70">
+        {t.about.note}
+      </Reveal>
+
+      <Reveal as="p" className={`${styles.sectionSubText} mt-20 text-center`}>
         {t.about.servicesKicker}
       </Reveal>
 
-      <div className="mt-8 flex flex-wrap gap-6 justify-center md:justify-start">
+      <div className="mx-auto mt-10 grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {t.services.map((card, index) => (
           <ServiceCard
             key={card.key}
             index={index}
             icon={serviceIcons[card.key]}
             title={card.title}
-            body={card.body}
+            line={card.line}
           />
         ))}
       </div>

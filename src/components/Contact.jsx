@@ -3,7 +3,8 @@ import { styles } from "../styles";
 import { EarthCanvas } from "./canvas";
 import emailjs from "@emailjs/browser";
 import { SectionWrapper } from "../hoc";
-import Reveal from "./Reveal";
+import Reveal, { SectionHeading } from "./Reveal";
+import Button from "./ui/Button";
 import LazyMount from "./LazyMount";
 import { contact as details } from "../constans/content";
 import { IconMail, IconPhone, IconLink } from "./Icons";
@@ -59,11 +60,20 @@ const Contact = () => {
   };
 
   return (
-    <div className="xl:mt-12 xl:flex-row flex-col-reverse flex gap-10 overflow-hidden">
-      <Reveal direction="right" className="flex-[0.75] bg-black-100 p-8 rounded-2xl">
-        <p className={styles.sectionSubText}>{t.contact.kicker}</p>
-        <h2 className={styles.sectionHeadText}>{t.contact.heading}</h2>
-        <p className="mt-5 text-secondary text-[15px] leading-[26px] max-w-xl">{t.contact.intro}</p>
+    <>
+      <SectionHeading
+        kicker={t.contact.kicker}
+        heading={t.contact.heading}
+        kickerClass={styles.sectionSubText}
+        headingClass={styles.sectionHeadText}
+      />
+
+      <Reveal as="p" className={`${styles.sectionIntro} mt-7`}>
+        {t.contact.intro}
+      </Reveal>
+
+      <div className="mx-auto mt-14 grid max-w-5xl items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)]">
+      <Reveal className="rounded-3xl border border-line bg-white/[0.02] p-7 sm:p-9">
 
         <form ref={formRef} onSubmit={handleSubmit} className="mt-10 flex flex-col gap-6">
           <label className="flex flex-col gap-3">
@@ -105,13 +115,9 @@ const Contact = () => {
             />
           </label>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="bg-[#8d48e6] hover:bg-[#7a35d6] disabled:opacity-60 py-3 px-8 outline-none w-fit text-white font-bold shadow-md transition-colors duration-200 rounded-xl"
-          >
+          <Button as="button" type="submit" disabled={loading} className="w-fit disabled:opacity-60">
             {loading ? t.contact.sending : t.contact.send}
-          </button>
+          </Button>
 
           {notice && (
             <p
@@ -170,10 +176,11 @@ const Contact = () => {
         </div>
       </Reveal>
 
-      <LazyMount className="xl:flex-1 md:w-[550px] h-[400px] md:h-[550px] md:self-center">
+      <LazyMount className="h-[320px] w-full sm:h-[420px] lg:h-[480px]">
         <EarthCanvas />
       </LazyMount>
-    </div>
+      </div>
+    </>
   );
 };
 
