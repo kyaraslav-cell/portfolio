@@ -190,7 +190,7 @@ const Scene = ({ compact, frozen, spin }) => {
   });
 
   return (
-    <group position={[0, -2.3, 0]} scale={compact ? 0.62 : 0.72}>
+    <group position={[0, -2.35, 0]} scale={compact ? 0.68 : 0.8}>
       <group ref={pivot}>
         <Arm frozen={frozen} />
         <Conveyor frozen={frozen} />

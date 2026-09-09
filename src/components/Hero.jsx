@@ -12,13 +12,13 @@ const Hero = () => {
 
   return (
     <section className="relative mx-auto flex min-h-screen w-full flex-col justify-center">
-      <div className={`${styles.paddingX} relative z-10 mx-auto w-full max-w-3xl pt-32 text-center sm:pt-36`}>
+      <div className={`${styles.paddingX} relative z-10 mx-auto w-full max-w-3xl pt-28 text-center sm:pt-32`}>
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
-          <p className="text-[12px] uppercase tracking-[0.32em] text-secondary sm:text-[13px]">
+          <p className="pl-[0.32em] text-[12px] uppercase tracking-[0.32em] text-secondary sm:text-[13px]">
             {t.hero.greeting}
           </p>
           <h1 className={`${styles.heroHeadText} text-balance`}>{t.hero.headline}</h1>
@@ -54,9 +54,11 @@ const Hero = () => {
         </motion.div>
       </div>
 
-      {/* No flex-1 here: in a constrained flex column it wins over the height
-          and collapses the canvas. */}
-      <div className="relative mt-4 h-[300px] w-full shrink-0 sm:mt-6 sm:h-[400px] lg:h-[440px]">
+      {/* The arm gets its own full-width band under the copy. Making it larger
+          inside the copy's own box would put it behind the text; giving it a
+          band of its own means it can be big and still never overlap.
+          No flex-1: in a constrained flex column it beats the height. */}
+      <div className="relative mt-2 h-[44vh] min-h-[300px] w-full shrink-0 sm:mt-4 sm:h-[52vh] lg:h-[58vh] lg:min-h-[460px]">
         <RobotArmCanvas />
       </div>
 

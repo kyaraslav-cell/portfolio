@@ -64,12 +64,8 @@ const Carousel = ({ items, renderItem, labels, className = "" }) => {
         className="flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {items.map((item, i) => (
-          <div
-            key={item.key ?? i}
-            className="w-[min(100%,860px)] shrink-0 snap-center"
-            aria-hidden={index !== i ? undefined : undefined}
-          >
-            {renderItem(item, i)}
+          <div key={item.key ?? i} className="w-full shrink-0 snap-center">
+            <div className="mx-auto max-w-[920px]">{renderItem(item, i)}</div>
           </div>
         ))}
       </div>

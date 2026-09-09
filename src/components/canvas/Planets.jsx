@@ -1,6 +1,7 @@
-import { Suspense, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { Suspense, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Decal, Html, Preload, useTexture } from "@react-three/drei";
+import { meteorTexture } from "../../utils/meteor";
 
 // Every sphere shares one WebGL context. One canvas per sphere is what the
 // original template did, and twenty of them would sit on the browser's context
@@ -10,7 +11,11 @@ const SPACING_X = 3;
 const SPACING_Y = 3.6;
 const DRAG_SENSITIVITY = 0.007;
 const DAMPING = 0.93;
-const IDLE_SPIN = 0.18;
+
+// Arrival: each sphere starts somewhere off the canvas and falls into its slot.
+const ARRIVE_SECONDS = 0.75;
+const ARRIVE_STAGGER = 0.025;
+const easeOut = (t) => 1 - Math.pow(1 - t, 3);
 
 const columnsFor = (w) => {
   if (w >= 1120) return 6;
@@ -19,11 +24,40 @@ const columnsFor = (w) => {
   return 3;
 };
 
-const Planet = ({ texture, name, position, index, register, onGrab, frozen }) => {
-  const mesh = useRef();
+// Deterministic per-index pseudo-random, so the layout is identical on every
+// load and nothing jumps between renders.
+const rand = (i, salt) => {
+  const x = Math.sin(i * 127.1 + salt * 311.7) * 43758.5453;
+  return x - Math.floor(x);
+};
+
+const Planet = ({ texture, surface, name, target, index, register, onGrab, frozen, entered }) => {
   const group = useRef();
+  const mesh = useRef();
   const [hovered, setHovered] = useState(false);
-  const state = useRef({ velocity: 0, rotation: 0, scale: 1 });
+
+  // Idle motion is a slow sway, not a full revolution: each sphere carries its
+  // mark on one face, and a continuous spin hides it for most of every turn.
+  // Direction, rate and phase differ per sphere. Dragging still turns a sphere
+  // all the way round and leaves it where it is let go.
+  const motion = useMemo(() => {
+    const dir = index % 2 === 0 ? 1 : -1;
+    const angle = rand(index, 1) * Math.PI * 2;
+    const distance = 13 + rand(index, 2) * 9;
+    return {
+      swayAmp: dir * (0.26 + rand(index, 3) * 0.22),
+      swayRate: 0.28 + rand(index, 9) * 0.34,
+      swayPhase: rand(index, 10) * Math.PI * 2,
+      tiltAmp: (rand(index, 4) - 0.5) * 0.3,
+      tiltRate: 0.2 + rand(index, 5) * 0.25,
+      bobPhase: rand(index, 6) * Math.PI * 2,
+      bobRate: 0.55 + rand(index, 7) * 0.5,
+      from: [Math.cos(angle) * distance, Math.sin(angle) * distance * 0.7],
+      delay: index * ARRIVE_STAGGER,
+    };
+  }, [index]);
+
+  const state = useRef({ velocity: 0, rotation: 0, scale: 1, elapsed: 0 });
 
   useEffect(() => register(index, state.current), [index, register]);
 
@@ -31,25 +65,46 @@ const Planet = ({ texture, name, position, index, register, onGrab, frozen }) =>
     const st = state.current;
     const step = Math.min(dt, 0.05);
 
-    st.rotation += st.velocity + (frozen ? 0 : IDLE_SPIN * step);
+    // st.rotation holds only what dragging added, so releasing leaves the
+    // sphere where it was put and the sway continues around that.
+    st.rotation += st.velocity;
     st.velocity *= DAMPING;
     if (Math.abs(st.velocity) < 0.00005) st.velocity = 0;
 
-    const targetScale = hovered ? 1.14 : 1;
+    const targetScale = hovered ? 1.09 : 1;
     st.scale += (targetScale - st.scale) * Math.min(1, step * 9);
 
     if (mesh.current) {
-      mesh.current.rotation.y = st.rotation;
+      const t = s.clock.elapsedTime;
+      const sway = frozen ? 0 : Math.sin(t * motion.swayRate + motion.swayPhase) * motion.swayAmp;
+      const tilt = frozen ? 0 : Math.sin(t * motion.tiltRate + motion.bobPhase) * motion.tiltAmp;
+      mesh.current.rotation.y = st.rotation + sway;
+      mesh.current.rotation.x = tilt;
       mesh.current.scale.setScalar(st.scale);
     }
-    if (group.current) {
-      const bob = frozen ? 0 : Math.sin(s.clock.elapsedTime * 0.8 + index * 1.7) * 0.06;
-      group.current.position.y = position[1] + bob;
+
+    if (!group.current) return;
+
+    if (frozen) {
+      group.current.position.set(target[0], target[1], 0);
+      return;
     }
+
+    if (entered) st.elapsed += step;
+    const p = entered
+      ? easeOut(Math.min(1, Math.max(0, (st.elapsed - motion.delay) / ARRIVE_SECONDS)))
+      : 0;
+
+    const bob = Math.sin(s.clock.elapsedTime * motion.bobRate + motion.bobPhase) * 0.07 * p;
+    group.current.position.set(
+      motion.from[0] + (target[0] - motion.from[0]) * p,
+      motion.from[1] + (target[1] - motion.from[1]) * p + bob,
+      0
+    );
   });
 
   return (
-    <group ref={group} position={position}>
+    <group ref={group}>
       <mesh
         ref={mesh}
         onPointerOver={(e) => {
@@ -66,13 +121,16 @@ const Planet = ({ texture, name, position, index, register, onGrab, frozen }) =>
           onGrab(index, e.clientX);
         }}
       >
-        <icosahedronGeometry args={[BALL_R, 4]} />
+        <icosahedronGeometry args={[BALL_R, 2]} />
+        {/* No emissive or colour shift on hover: the rock keeps its own colour. */}
         <meshStandardMaterial
-          color="#fff8eb"
-          roughness={0.45}
+          map={surface}
+          bumpMap={surface}
+          bumpScale={0.035}
+          color="#cfc9d8"
+          roughness={0.9}
           metalness={0.05}
-          emissive="#915eff"
-          emissiveIntensity={hovered ? 0.22 : 0}
+          flatShading
         />
         <Decal position={[0, 0, 1]} rotation={[0, 0, 0]} scale={1.15} map={texture} />
       </mesh>
@@ -84,7 +142,7 @@ const Planet = ({ texture, name, position, index, register, onGrab, frozen }) =>
         zIndexRange={[5, 0]}
       >
         <span
-          className={`block w-[104px] text-center text-[12px] leading-tight transition-colors duration-400 ease-fluid ${
+          className={`block w-[104px] text-center text-[12px] leading-tight transition-colors duration-500 ease-fluid ${
             hovered ? "text-white" : "text-secondary"
           }`}
         >
@@ -95,30 +153,34 @@ const Planet = ({ texture, name, position, index, register, onGrab, frozen }) =>
   );
 };
 
-const Grid = ({ items, cols, textures, register, onGrab, frozen }) => {
+const Grid = ({ items, cols, textures, register, onGrab, frozen, entered }) => {
   const rows = Math.ceil(items.length / cols);
+  const surface = useMemo(() => meteorTexture(), []);
 
   return (
     <>
-      <ambientLight intensity={0.9} />
-      <directionalLight position={[2, 3, 5]} intensity={1.5} />
-      <pointLight position={[-4, 2, 4]} intensity={12} color="#915eff" distance={18} />
+      <ambientLight intensity={0.75} />
+      <directionalLight position={[3, 4, 6]} intensity={1.9} />
+      <directionalLight position={[-4, -2, 2]} intensity={0.4} color="#b58bff" />
 
       {items.map((tech, i) => {
         const col = i % cols;
         const row = Math.floor(i / cols);
-        const x = (col - (cols - 1) / 2) * SPACING_X;
-        const y = ((rows - 1) / 2 - row) * SPACING_Y;
         return (
           <Planet
             key={tech.name}
             index={i}
             name={tech.name}
             texture={textures[i]}
-            position={[x, y, 0]}
+            surface={surface}
+            target={[
+              (col - (cols - 1) / 2) * SPACING_X,
+              ((rows - 1) / 2 - row) * SPACING_Y,
+            ]}
             register={register}
             onGrab={onGrab}
             frozen={frozen}
+            entered={entered}
           />
         );
       })}
@@ -137,6 +199,7 @@ const PlanetsCanvas = ({ items }) => {
   const drag = useRef(null);
   const [layout, setLayout] = useState({ cols: 4, zoom: 34, height: 400 });
   const [frozen, setFrozen] = useState(false);
+  const [entered, setEntered] = useState(false);
 
   const register = useCallback((index, state) => {
     states.current[index] = state;
@@ -155,6 +218,26 @@ const PlanetsCanvas = ({ items }) => {
     return () => mq.removeEventListener("change", onChange);
   }, []);
 
+  // The drift starts when the grid is actually looked at, not when it mounts.
+  useEffect(() => {
+    const el = wrapper.current;
+    if (!el || typeof IntersectionObserver === "undefined") {
+      setEntered(true);
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setEntered(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   useLayoutEffect(() => {
     const el = wrapper.current;
     if (!el) return;
@@ -164,8 +247,8 @@ const PlanetsCanvas = ({ items }) => {
       if (!width) return;
       const cols = columnsFor(width);
       const rows = Math.ceil(items.length / cols);
-      // Zoom is px per world unit, so the grid always fills the width without
-      // the spheres overlapping.
+      // Zoom is px per world unit, so the grid fills the width without the
+      // spheres overlapping.
       const zoom = Math.max(22, Math.min(40, width / (cols * SPACING_X)));
       setLayout({ cols, zoom, height: Math.round(rows * SPACING_Y * zoom) });
     };
@@ -212,6 +295,7 @@ const PlanetsCanvas = ({ items }) => {
             register={register}
             onGrab={onGrab}
             frozen={frozen}
+            entered={entered}
           />
         </Suspense>
         <Preload all />

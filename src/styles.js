@@ -10,8 +10,10 @@ const styles = {
 
   sectionHeadText:
     "font-display font-extrabold text-white md:text-[52px] sm:text-[44px] xs:text-[36px] text-[30px] leading-[1.08] tracking-[-0.03em]",
+  // pl matches the tracking: letter-spacing also applies after the final
+  // character, which pulls centred uppercase visually left without it.
   sectionSubText:
-    "sm:text-[13px] text-[12px] text-accent-soft uppercase tracking-[0.28em] font-medium",
+    "sm:text-[13px] text-[12px] text-accent-soft uppercase tracking-[0.28em] pl-[0.28em] font-medium",
   sectionIntro:
     "text-secondary sm:text-[17px] text-[15px] leading-[1.7] max-w-2xl mx-auto text-center",
 };
