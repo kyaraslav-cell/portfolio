@@ -70,7 +70,7 @@ const Carousel = ({ items, renderItem, labels, className = "" }) => {
         ))}
       </div>
 
-      <div className="mt-8 flex items-center justify-center gap-5">
+      <div className="mt-6 flex items-center justify-center gap-5 sm:mt-8">
         <Arrow dir="prev" label={labels.prev} onClick={() => goTo(index - 1)} disabled={index === 0} />
         <div className="flex items-center gap-2.5">
           {items.map((item, i) => (

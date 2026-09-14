@@ -1,6 +1,6 @@
 import EarthCanvas from "./Earth";
-import PlanetsCanvas from "./Planets";
+import BallCanvas from "./Ball";
 import RobotArmCanvas from "./RobotArm";
 import StarsCanvas from "./Stars";
 
-export { EarthCanvas, PlanetsCanvas, RobotArmCanvas, StarsCanvas };
+export { EarthCanvas, BallCanvas, RobotArmCanvas, StarsCanvas };

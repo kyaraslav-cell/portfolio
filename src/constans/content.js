@@ -52,7 +52,7 @@ const pl = {
   works: {
     kicker: "Realizacje",
     heading: "Co zbudowałem",
-    intro: "Dwa działające systemy. Liczby pochodzą z nich, nie z szacunków.",
+    intro: "Dwa działające systemy i zmierzone liczby.",
     labels: {
       problem: "Problem",
       approach: "Podejście",
@@ -69,43 +69,34 @@ const pl = {
     {
       key: "mailwatch",
       name: "MailWatch",
-      tagline: "Zapytania klientów wyłowione ze skrzynki sklepu",
+      tagline: "Zapytania klientów wyłowione ze skrzynki",
       status: "Działa u klienta",
       metrics: [
-        { value: "4 156", label: "przeanalizowanych wiadomości" },
-        { value: "72% → 25%", label: "poczty trafiającej do człowieka" },
-        { value: "14,6 h", label: "mediana odpowiedzi przed wdrożeniem" },
-        { value: "0", label: "zapytań zgubionych przez filtr" },
+        { value: "25%", label: "poczty trafia do człowieka zamiast 72%" },
+        { value: "14,6 h", label: "czekał klient przed wdrożeniem" },
+        { value: "0", label: "zgubionych zapytań" },
       ],
-      problem: "Zapytania ginęły w skrzynce razem z mailingiem i powiadomieniami platform.",
-      approach:
-        "Filtr zbudowany na poczcie sklepu. Dane osobowe usuwane przed modelem, bez opcji wyłączenia.",
-      result: "Każde zapytanie ląduje na telefonie właściciela. Reszta zostaje cicha.",
-      measured: "4 156 wiadomości z 1 697 dni, 374 potwierdzonych klientów.",
-      price: "3 000 - 6 000 zł wdrożenie, 200 - 400 zł / mies.",
-      stack: ["Node.js", "IMAP", "Telegram", "LLM"],
+      problem: "Zapytania ginęły między mailingiem a powiadomieniami.",
+      result: "Każde zapytanie trafia na telefon właściciela.",
+      measured: "Zmierzone na 4 156 wiadomościach z 1 697 dni.",
+      price: "3 000 - 6 000 zł + 200 - 400 zł / mies.",
       link: "https://github.com/kyaraslav-cell/mailwatch",
       linkLabel: "Kod na GitHubie",
     },
     {
       key: "leadfind",
       name: "LeadFind",
-      tagline: "Monitoring publicznych źródeł z oceną i decyzją na telefonie",
+      tagline: "Monitoring źródeł z decyzją na telefonie",
       status: "Działa od sierpnia 2026",
       metrics: [
         { value: "1 602", label: "leady w bazie" },
-        { value: "11", label: "workflowów n8n" },
         { value: "7", label: "monitorowanych źródeł" },
-        { value: "150 MB", label: "zamiast 1,5 GB po wyjściu z Dockera" },
+        { value: "11", label: "workflowów n8n" },
       ],
-      problem: "Publiczne źródła trzeba przeglądać codziennie, żeby zdążyć zareagować.",
-      approach:
-        "Źródła nie dotykają bazy. Jeden webhook deduplikuje i zapisuje, kolejka ocenia, Telegram pyta o decyzję.",
-      result: "Jeden zepsuty scraper nie zatrzymuje reszty. Decyzja wraca i uczy kolejny prompt.",
-      measured: "1 602 rekordy i pomiary zasobów z działającej instalacji.",
-      price: "6 000 - 12 000 zł wdrożenie, 300 - 600 zł / mies.",
-      stack: ["n8n", "PostgreSQL", "Telegram", "LLM"],
-      legal: "Tylko publiczne ogłoszenia biznesowe, niska częstotliwość, źródło przy każdym rekordzie.",
+      problem: "Źródła trzeba przeglądać codziennie, żeby zdążyć.",
+      result: "Nowe oferty same trafiają na telefon, już ocenione.",
+      measured: "Dane z działającej instalacji.",
+      price: "6 000 - 12 000 zł + 300 - 600 zł / mies.",
       link: "",
       linkLabel: "",
     },
@@ -114,14 +105,13 @@ const pl = {
   stack: {
     kicker: "Technologie",
     heading: "Czym pracuję",
-    intro: "Przeciągnij dowolną kulę, żeby ją obrócić.",
+    intro: "Przeciągnij kulę, żeby ją obrócić.",
   },
 
   trust: {
     kicker: "Bezpieczeństwo",
     heading: "Co się dzieje z Twoimi danymi",
-    intro:
-      "Najczęstszy powód, dla którego mała firma nie kupuje automatyzacji, to obawa, że jej dane wyjadą gdzieś, skąd nie da się ich wycofać.",
+    intro: "Twoje dane zostają pod Twoją kontrolą.",
     points: [
       { title: "Na Twoim serwerze", body: "Żadna zewnętrzna platforma nie trzyma Twoich zamówień." },
       { title: "Dane osobowe usuwane", body: "Zanim cokolwiek trafi do modelu. Bez opcji wyłączenia." },
@@ -142,7 +132,7 @@ const pl = {
       { scope: "System wieloetapowy z AI", detail: "Kilka źródeł, klasyfikacja, interfejs, monitoring", price: "8 000 - 20 000 zł" },
       { scope: "Utrzymanie i monitoring", detail: "Reakcja na awarie, zmiany w API dostawców", price: "200 - 600 zł / mies." },
     ],
-    note: "Pierwsza rozmowa i rozrysowanie procesu są bezpłatne. Jeśli problem rozwiązuje ustawienie w systemie, który już masz, powiem to zamiast wystawiać fakturę.",
+    note: "Pierwsza rozmowa jest bezpłatna. Jeśli wystarczy ustawienie w Twoim systemie, powiem to.",
   },
 
   contact: {
@@ -219,7 +209,7 @@ const en = {
   works: {
     kicker: "Work",
     heading: "What I have built",
-    intro: "Two running systems. The numbers come from them, not from estimates.",
+    intro: "Two running systems and measured numbers.",
     labels: {
       problem: "Problem",
       approach: "Approach",
@@ -236,43 +226,34 @@ const en = {
     {
       key: "mailwatch",
       name: "MailWatch",
-      tagline: "Customer inquiries pulled out of a shop mailbox",
+      tagline: "Customer inquiries pulled out of the inbox",
       status: "Running at a client",
       metrics: [
-        { value: "4,156", label: "messages analysed" },
-        { value: "72% → 25%", label: "of mail reaching a human" },
-        { value: "14.6 h", label: "median reply time before" },
-        { value: "0", label: "inquiries lost to the filter" },
+        { value: "25%", label: "of mail reaches a human, down from 72%" },
+        { value: "14.6 h", label: "median wait before" },
+        { value: "0", label: "inquiries lost" },
       ],
-      problem: "Inquiries sat in the inbox among mailing lists and platform notifications.",
-      approach:
-        "Filter built from the shop's own mail. Personal data stripped before the model, with no way to turn it off.",
-      result: "Every inquiry lands on the owner's phone. Everything else stays quiet.",
-      measured: "4,156 messages over 1,697 days, 374 confirmed customers.",
-      price: "3,000 - 6,000 PLN to build, 200 - 400 PLN / month",
-      stack: ["Node.js", "IMAP", "Telegram", "LLM"],
+      problem: "Inquiries got lost among mailing lists and notifications.",
+      result: "Every inquiry lands on the owner's phone.",
+      measured: "Measured on 4,156 messages over 1,697 days.",
+      price: "3,000 - 6,000 PLN + 200 - 400 PLN / month",
       link: "https://github.com/kyaraslav-cell/mailwatch",
       linkLabel: "Code on GitHub",
     },
     {
       key: "leadfind",
       name: "LeadFind",
-      tagline: "Public sources watched, scored, and decided on from a phone",
+      tagline: "Sources watched, scored, decided on a phone",
       status: "Running since August 2026",
       metrics: [
         { value: "1,602", label: "leads in the database" },
-        { value: "11", label: "n8n workflows" },
         { value: "7", label: "sources watched" },
-        { value: "150 MB", label: "instead of 1.5 GB after dropping Docker" },
+        { value: "11", label: "n8n workflows" },
       ],
-      problem: "Public sources have to be checked daily to react in time.",
-      approach:
-        "Sources never touch the database. One webhook dedupes and stores, a queue scores, Telegram asks for the decision.",
-      result: "One broken scraper cannot take the rest down. The decision returns and trains the next prompt.",
-      measured: "1,602 records and resource figures from the running install.",
-      price: "6,000 - 12,000 PLN to build, 300 - 600 PLN / month",
-      stack: ["n8n", "PostgreSQL", "Telegram", "LLM"],
-      legal: "Public business listings only, low polling frequency, provenance on every record.",
+      problem: "Sources need checking daily to react in time.",
+      result: "New offers reach a phone, already scored.",
+      measured: "Figures from the running install.",
+      price: "6,000 - 12,000 PLN + 300 - 600 PLN / month",
       link: "",
       linkLabel: "",
     },
@@ -287,8 +268,7 @@ const en = {
   trust: {
     kicker: "Security",
     heading: "What happens to your data",
-    intro:
-      "The most common reason a small business does not buy automation is the fear that its data leaves for somewhere it cannot be pulled back from.",
+    intro: "Your data stays under your control.",
     points: [
       { title: "On your server", body: "No outside platform holds your orders." },
       { title: "Personal data stripped", body: "Before anything reaches a model. No opt-out." },
@@ -309,7 +289,7 @@ const en = {
       { scope: "Multi-step system with AI", detail: "Several sources, classification, interface, monitoring", price: "8,000 - 20,000 PLN" },
       { scope: "Maintenance and monitoring", detail: "Response to failures, changes in vendor APIs", price: "200 - 600 PLN / month" },
     ],
-    note: "The first call and mapping the process cost nothing. If a setting in a system you already own solves it, I will say so rather than invoice you.",
+    note: "The first call is free. If a setting in your system solves it, I will say so.",
   },
 
   contact: {

@@ -81,9 +81,15 @@ html {
 /* react-three-fiber puts className on its wrapper, and touch-action does not
    inherit, so the rule has to reach the canvas element itself. pan-y lets a
    vertical swipe scroll the page while a horizontal drag turns the arm. */
-.arm-canvas canvas,
-.planets-canvas canvas {
+.arm-canvas canvas {
   touch-action: pan-y;
+}
+
+/* OrbitControls sets touch-action: none inline on each ball's canvas, so a
+   swipe that starts on a ball would never scroll the page. Vertical swipes
+   scroll; horizontal drags still turn the ball. */
+.ball-canvas canvas {
+  touch-action: pan-y !important;
 }
 
 .black-gradient {
