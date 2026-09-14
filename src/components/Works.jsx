@@ -35,7 +35,7 @@ const ProjectCard = ({ project, labels }) => {
       <div className="px-5 py-7 text-center sm:px-10 sm:py-9">
         <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2">
           <h3 className="font-display text-[22px] font-extrabold text-white sm:text-[26px]">{project.name}</h3>
-          <span className="rounded-full border border-signal/40 px-2.5 py-0.5 text-[10px] uppercase tracking-[0.14em] text-signal sm:text-[11px]">
+          <span className="rounded-full border border-signal/40 px-3 py-1 text-[12px] leading-snug text-signal sm:text-[13px]">
             {project.status}
           </span>
         </div>
