@@ -11,19 +11,26 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 WORKTREE=$(mktemp -d)
-trap 'git worktree remove --force "$WORKTREE" 2>/dev/null || true' EXIT
+cleanup() {
+  git worktree remove --force "$WORKTREE" 2>/dev/null || true
+  [ -n "${BUILD_BRANCH:-}" ] && git branch -D "$BUILD_BRANCH" -q 2>/dev/null || true
+}
+trap cleanup EXIT
 
 npm run build
 touch dist/.nojekyll
 
 git worktree add --detach "$WORKTREE" >/dev/null
-git -C "$WORKTREE" checkout --orphan gh-pages -q
+# A throwaway orphan per run, pushed onto gh-pages. Naming it gh-pages locally
+# fails on the second run, because the first run leaves that branch behind.
+BUILD_BRANCH="pages-build-$(date +%s)"
+git -C "$WORKTREE" checkout --orphan "$BUILD_BRANCH" -q
 git -C "$WORKTREE" rm -rq --cached .
 find "$WORKTREE" -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} +
 cp -r dist/. "$WORKTREE"/
 
 git -C "$WORKTREE" add -A
 git -C "$WORKTREE" commit -q -m "Build $(git rev-parse --short HEAD)"
-git -C "$WORKTREE" push -q -f origin gh-pages
+git -C "$WORKTREE" push -q -f origin "$BUILD_BRANCH:gh-pages"
 
 echo "Deployed https://kyaraslav-cell.github.io/portfolio/"
