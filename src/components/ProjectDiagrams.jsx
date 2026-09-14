@@ -19,8 +19,7 @@ const L = {
     droppedSub: "75% poczty",
     truth: "odpowiedzi obsługi = dane uczące",
     volume: "4 156 wiadomości",
-    source: "Źródło",
-    sources: "7 źródeł",
+    sources: "6 źródeł",
     intake: "Intake",
     intakeSub: "dedup + zapis",
     leads: "1 602 leady",
@@ -38,8 +37,7 @@ const L = {
     droppedSub: "75% of mail",
     truth: "staff replies = training data",
     volume: "4,156 messages",
-    source: "Source",
-    sources: "7 sources",
+    sources: "6 sources",
     intake: "Intake",
     intakeSub: "dedupe + store",
     leads: "1,602 leads",
@@ -206,9 +204,15 @@ export const LeadFindDiagram = () => {
   const d = L[lang];
   const still = useReducedMotion();
 
-  const s1 = "M94 59 C118 59, 120 92, 140 96";
-  const s2 = "M94 95 H140";
-  const s3 = "M94 131 C118 131, 120 104, 140 100";
+  // The six source workflows that actually run in LeadFind, each wired into
+  // the one intake webhook.
+  const sources = ["Useme", "Oferia", "Freelancer", "pracuj.pl", "theprotocol", "No Fluff Jobs"].map(
+    (name, i) => {
+      const cy = 45 + i * 28;
+      const entry = 86 + i * 5;
+      return { name, y: cy - 11, d: `M96 ${cy} C118 ${cy}, 118 ${entry}, 140 ${entry}` };
+    }
+  );
   const store = "M186 118 V152";
   const toQueue = "M232 98 H266";
   const toPhone = "M323 118 V140";
@@ -223,9 +227,9 @@ export const LeadFindDiagram = () => {
         {d.sources}
       </Caption>
 
-      <Wire d={s1} />
-      <Wire d={s2} />
-      <Wire d={s3} />
+      {sources.map((src) => (
+        <Wire key={src.name} d={src.d} />
+      ))}
       <Wire d={store} />
       <Wire d={toQueue} />
       <Wire d={toPhone} colour={GOOD} />
@@ -233,9 +237,9 @@ export const LeadFindDiagram = () => {
 
       {!still && (
         <>
-          <Pulse d={s1} dur={2.8} delay={0} />
-          <Pulse d={s2} dur={2.8} delay={0.6} />
-          <Pulse d={s3} dur={2.8} delay={1.2} />
+          {sources.map((src, i) => (
+            <Pulse key={src.name} d={src.d} dur={2.8} delay={i * 0.45} />
+          ))}
           <Pulse d={store} dur={2.2} delay={1.9} />
           <Pulse d={toQueue} dur={2.2} delay={2.1} />
           <Pulse d={toPhone} colour={GOOD} dur={2.2} delay={2.7} />
@@ -243,9 +247,9 @@ export const LeadFindDiagram = () => {
         </>
       )}
 
-      <Box x="14" y="46" w="80" h="26" label={`${d.source} 1`} />
-      <Box x="14" y="82" w="80" h="26" label={`${d.source} 2`} />
-      <Box x="14" y="118" w="80" h="26" label={`${d.source} 3`} />
+      {sources.map((src) => (
+        <Box key={src.name} x="12" y={src.y} w="84" h="22" label={src.name} />
+      ))}
       <Box x="140" y="78" w="92" label={d.intake} sub={d.intakeSub} accent={ACCENT} pulse={!still} />
       <Box x="140" y="152" w="92" h="34" label="PostgreSQL" sub={d.leads} />
       <Box x="266" y="78" w="114" label={d.queue} sub={d.queueSub} />

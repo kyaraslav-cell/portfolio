@@ -90,8 +90,8 @@ const pl = {
       status: "Działa od sierpnia 2026",
       metrics: [
         { value: "1 602", label: "leady w bazie" },
-        { value: "7", label: "monitorowanych źródeł" },
-        { value: "11", label: "workflowów n8n" },
+        { value: "6", label: "monitorowanych źródeł" },
+        { value: "12", label: "workflowów n8n" },
       ],
       problem: "Źródła trzeba przeglądać codziennie, żeby zdążyć.",
       result: "Nowe oferty same trafiają na telefon, już ocenione.",
@@ -248,8 +248,8 @@ const en = {
       status: "Running since August 2026",
       metrics: [
         { value: "1,602", label: "leads in the database" },
-        { value: "7", label: "sources watched" },
-        { value: "11", label: "n8n workflows" },
+        { value: "6", label: "sources watched" },
+        { value: "12", label: "n8n workflows" },
       ],
       problem: "Sources need checking daily to react in time.",
       result: "New offers reach a phone, already scored.",
