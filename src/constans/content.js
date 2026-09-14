@@ -109,9 +109,10 @@ const pl = {
   },
 
   trust: {
-    kicker: "Bezpieczeństwo",
+    kicker: "Cyberbezpieczeństwo",
     heading: "Co się dzieje z Twoimi danymi",
-    intro: "Twoje dane zostają pod Twoją kontrolą.",
+    frameworks: ["ISO/IEC 27001", "NIS2", "RODO"],
+    intro: "Zabezpieczenia oparte na wymaganiach tych ram. To nie jest certyfikacja.",
     points: [
       { title: "Na Twoim serwerze", body: "Żadna zewnętrzna platforma nie trzyma Twoich zamówień." },
       { title: "Dane osobowe usuwane", body: "Zanim cokolwiek trafi do modelu. Bez opcji wyłączenia." },
@@ -266,9 +267,10 @@ const en = {
   },
 
   trust: {
-    kicker: "Security",
+    kicker: "Cybersecurity",
     heading: "What happens to your data",
-    intro: "Your data stays under your control.",
+    frameworks: ["ISO/IEC 27001", "NIS2", "GDPR"],
+    intro: "Safeguards built on the requirements of these frameworks. Not a certification.",
     points: [
       { title: "On your server", body: "No outside platform holds your orders." },
       { title: "Personal data stripped", body: "Before anything reaches a model. No opt-out." },

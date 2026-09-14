@@ -19,7 +19,18 @@ const Trust = () => {
         headingClass={styles.sectionHeadText}
       />
 
-      <Reveal as="p" className={`${styles.sectionIntro} mt-7`}>
+      <Reveal className="mt-7 flex flex-wrap justify-center gap-3">
+        {t.trust.frameworks.map((f) => (
+          <span
+            key={f}
+            className="rounded-full border border-signal/40 bg-signal/[0.07] px-5 py-2 font-display text-[15px] font-bold tracking-[-0.01em] text-signal transition-colors duration-500 ease-fluid hover:border-signal sm:text-[17px]"
+          >
+            {f}
+          </span>
+        ))}
+      </Reveal>
+
+      <Reveal as="p" className="mx-auto mt-4 max-w-xl text-center text-[13px] leading-[1.6] text-secondary/70">
         {t.trust.intro}
       </Reveal>
 
