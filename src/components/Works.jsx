@@ -54,8 +54,6 @@ const ProjectCard = ({ project, labels }) => {
 
         <p className="mt-4 text-[11px] text-secondary/60 sm:text-[12px]">{project.measured}</p>
 
-        <p className="mt-6 font-display text-[15px] font-semibold text-white">{project.price}</p>
-
         {project.link && (
           <a
             href={project.link}

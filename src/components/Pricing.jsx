@@ -31,7 +31,7 @@ const Pricing = () => {
               <p className="font-display text-[17px] font-semibold text-white">{row.scope}</p>
               <p className="mt-1 text-[13px] text-secondary">{row.detail}</p>
             </div>
-            <p className="font-display text-[18px] font-bold text-accent-soft transition-transform duration-500 ease-fluid group-hover:scale-105 sm:whitespace-nowrap">
+            <p className="font-display text-[18px] font-bold text-accent-soft transition-transform duration-500 ease-fluid group-hover:scale-105 sm:max-w-[240px] sm:text-right">
               {row.price}
             </p>
           </div>
