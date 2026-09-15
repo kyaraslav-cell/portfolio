@@ -8,7 +8,10 @@ import CanvasLoader from "../Loader";
 
 
 const Earth = () => {
-  const planet = useGLTF("../planet/scene.gltf");
+  // BASE_URL follows Vite's base, so the model resolves under /portfolio/ on
+  // GitHub Pages as well as at the root locally. "../planet" resolved to the
+  // domain root on Pages and 404'd.
+  const planet = useGLTF(`${import.meta.env.BASE_URL}planet/scene.gltf`);
   return (
 
       

@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+import { contact as details } from "../constans/content";
 import { motion, AnimatePresence } from "framer-motion";
 import { styles } from "../styles";
 import { logo, menu, close } from "../assets";
@@ -109,34 +111,83 @@ const Navbar = () => {
         </div>
       </div>
 
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
-            className="fixed inset-0 z-20 bg-primary p-8 pt-24 xl:hidden"
-          >
-            <ul className="list-none flex flex-col gap-6">
-              {links.map((link) => (
-                <li key={link.id}>
-                  <a
-                    href={`#${link.id}`}
-                    onClick={() => {
-                      setActive(link.id);
-                      setOpen(false);
-                    }}
-                    className="font-display text-[28px] font-semibold text-white transition-colors duration-500 ease-fluid hover:text-accent-soft"
-                  >
-                    {link.title}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Portalled to <body>. Once scrolled, the nav gets backdrop-blur, and a
+          backdrop filter makes the nav the containing block for any fixed
+          child: the menu then covered only the nav's own strip and the page
+          showed straight through it. */}
+      {createPortal(
+        <AnimatePresence>
+          {open && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              className="mobile-menu fixed inset-0 z-[25] overflow-y-auto xl:hidden"
+            >
+              <span aria-hidden="true" className="mobile-menu-glow" />
+              {/* The page's nav lives inside the app root's stacking context,
+                  so this body-level layer paints over it. The menu carries its
+                  own header, close button included. */}
+              <div className={`${styles.paddingX} relative flex items-center justify-between py-4`}>
+                <span className="flex items-center gap-2">
+                  <img src={logo} alt="" className="h-12 w-12 object-contain" />
+                  <span className="font-display text-[16px] font-bold leading-tight text-white">Jarosław</span>
+                </span>
+                <div className="flex items-center gap-4">
+                  <LangToggle />
+                  <button type="button" aria-label="Close menu" onClick={() => setOpen(false)}>
+                    <img src={close} alt="" className="h-7 w-7 object-contain" />
+                  </button>
+                </div>
+              </div>
+              <nav className="relative flex min-h-[calc(100%-80px)] flex-col px-8 pb-10 pt-8">
+                <ul className="flex list-none flex-col">
+                  {links.map((link, i) => (
+                    <motion.li
+                      key={link.id}
+                      initial={{ opacity: 0, x: 24 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.45, delay: 0.05 + i * 0.05, ease: [0.22, 1, 0.36, 1] }}
+                      className="border-b border-line"
+                    >
+                      <a
+                        href={`#${link.id}`}
+                        onClick={() => {
+                          setActive(link.id);
+                          setOpen(false);
+                        }}
+                        className={`group flex items-baseline gap-4 py-4 font-display text-[26px] font-semibold transition-colors duration-500 ease-fluid hover:text-accent-soft ${
+                          active === link.id ? "text-accent-soft" : "text-white"
+                        }`}
+                      >
+                        <span className="w-6 font-sans text-[12px] font-medium tracking-wider text-signal/80">
+                          {String(i + 1).padStart(2, "0")}
+                        </span>
+                        {link.title}
+                        <span className="ml-auto text-[18px] text-secondary/40 transition-transform duration-500 ease-fluid group-hover:translate-x-1 group-hover:text-accent-soft">
+                          →
+                        </span>
+                      </a>
+                    </motion.li>
+                  ))}
+                </ul>
+
+                <motion.a
+                  href={`mailto:${details.email}`}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5, delay: 0.4 }}
+                  className="mt-auto pt-10 text-[14px] text-secondary transition-colors duration-500 ease-fluid hover:text-white"
+                >
+                  {details.email}
+                </motion.a>
+              </nav>
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </nav>
   );
 };

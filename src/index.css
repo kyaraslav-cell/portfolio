@@ -40,6 +40,23 @@ html {
   display: block;
 }
 
+/* Mobile menu ground: the page's own violet and teal as soft light over the
+   dark base, with a faint dot grid, instead of a flat fill. */
+.mobile-menu {
+  background-color: #050816;
+  background-image: radial-gradient(rgba(181, 139, 255, 0.09) 1px, transparent 1px),
+    linear-gradient(160deg, #0d0a24 0%, #050816 55%, #07101a 100%);
+  background-size: 22px 22px, 100% 100%;
+}
+
+.mobile-menu-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(60% 45% at 100% 0%, rgba(145, 94, 255, 0.28), transparent 70%),
+    radial-gradient(55% 40% at 0% 100%, rgba(0, 206, 168, 0.16), transparent 70%);
+}
+
 /* Reveal-on-scroll. The class is added by an IntersectionObserver; if the
    transition never runs the element is simply already in its final state. */
 .reveal {

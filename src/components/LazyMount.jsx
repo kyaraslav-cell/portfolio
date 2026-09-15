@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import CanvasBoundary from "./CanvasBoundary";
 
 // Each WebGL canvas costs a context, and browsers cap how many exist at once.
 // Mounting them only once they are near the viewport keeps the first paint
@@ -31,7 +32,7 @@ const LazyMount = ({ children, rootMargin = "300px", className = "", placeholder
 
   return (
     <div ref={ref} className={className}>
-      {shown ? children : placeholder}
+      {shown ? <CanvasBoundary fallback={placeholder}>{children}</CanvasBoundary> : placeholder}
     </div>
   );
 };

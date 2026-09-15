@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { styles } from "../styles";
 import { RobotArmCanvas } from "./canvas";
 import Button from "./ui/Button";
+import CanvasBoundary from "./CanvasBoundary";
 import { useLang } from "../context/Lang";
 
 // Copy on top, arm underneath, both centred. The arm used to sit behind the
@@ -59,7 +60,9 @@ const Hero = () => {
           band of its own means it can be big and still never overlap.
           No flex-1: in a constrained flex column it beats the height. */}
       <div className="relative mt-2 h-[44vh] min-h-[300px] w-full shrink-0 sm:mt-4 sm:h-[52vh] lg:h-[58vh] lg:min-h-[460px]">
-        <RobotArmCanvas />
+        <CanvasBoundary>
+          <RobotArmCanvas />
+        </CanvasBoundary>
       </div>
 
       <div className="relative z-10 flex flex-col items-center gap-3 pb-10">

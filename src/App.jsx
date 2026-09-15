@@ -11,6 +11,7 @@ import {
   Works,
 } from "./components";
 import { LangProvider } from "./context/Lang";
+import CanvasBoundary from "./components/CanvasBoundary";
 
 const App = () => (
   <LangProvider>
@@ -26,7 +27,9 @@ const App = () => (
       <Pricing />
       <div className="relative z-0">
         <Contact />
-        <StarsCanvas />
+        <CanvasBoundary>
+          <StarsCanvas />
+        </CanvasBoundary>
       </div>
       <Footer />
     </div>
